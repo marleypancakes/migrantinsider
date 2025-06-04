@@ -89,23 +89,23 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-netlify-cms",
-      options: {
-        enableIdentityWidget: false,
-      },
-    },
-    {
       resolve: "gatsby-plugin-decap-cms",
       options: {
         modulePath: `${__dirname}/src/cms/cms.js`,
       },
     },
-    `gatsby-plugin-netlify`,
     `gatsby-plugin-gatsby-cloud`,
     "gatsby-plugin-postcss",
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     `gatsby-plugin-offline`,
     `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-source-ghost`,
+      options: {
+				apiUrl: 'https://notes-on-the-crises.ghost.io',
+				contentApiKey: '66d1511ea9fd2fad26cd1abaad',
+      },
+    },
   ],
 }

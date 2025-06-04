@@ -8,10 +8,9 @@ import { Link } from "gatsby"
 const BlogsContainer = ({ data }) => {
   let posts = data?.map(item => {
     return {
-      featuredimage: item.node.frontmatter.featuredimage,
-      title: item.node.frontmatter.title,
-      description: item.node.frontmatter.description,
-      slug: item.node.fields.slug,
+      featuredimage: item.node.feature_image,
+      title: item.node.title,
+      slug: item.node.slug,
     }
   })
   console.log("Data ", data)

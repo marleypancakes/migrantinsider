@@ -34,23 +34,23 @@ const StyledDiv = styled.div`
 `
 const BlogPost = props => {
   const { pageContext } = props
-  const nextSlug = pageContext.next ? pageContext.next.fields.slug : "/"
-  const previousSlug = pageContext.previous
-    ? pageContext.previous.fields.slug
-    : "/"
-  const nextLinkStatus = pageContext.next
-    ? pageContext.next.frontmatter.templateKey === "blog-post"
-      ? true
-      : false
-    : false
-  const previousLinkStatus = pageContext.previous
-    ? pageContext.previous.frontmatter.templateKey === "blog-post"
-      ? true
-      : false
-    : false
+  // const nextSlug = pageContext.next ? pageContext.next.fields.slug : "/"
+  // const previousSlug = pageContext.previous
+  //   ? pageContext.previous.fields.slug
+  //   : "/"
+  // const nextLinkStatus = pageContext.next
+  //   ? pageContext.next.frontmatter.templateKey === "blog-post"
+  //     ? true
+  //     : false
+  //   : false
+  // const previousLinkStatus = pageContext.previous
+  //   ? pageContext.previous.frontmatter.templateKey === "blog-post"
+  //     ? true
+  //     : false
+  //   : false
 
-  const post = props.data.markdownRemark
-  let date = new Date(post.frontmatter.date) // assuming post.frontmatter.date is in ISO string format
+  const post = props.data.ghostPost
+  let date = new Date(post.published_at) // assuming post.frontmatter.date is in ISO string format
   let options = { year: "numeric", month: "short", day: "numeric" }
   let formattedDate = date.toLocaleDateString("en-US", options)
   let titlaDate = date.toLocaleDateString("en-US", {
@@ -72,15 +72,15 @@ const BlogPost = props => {
           <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
             <header className="mb-4 lg:mb-6 not-format">
               <h1 className="mb-4 text-3xl font-extrabold leading-tight text-[#000000] lg:mb-6 lg:text-4xl dark:text-black">
-                {post.frontmatter.title}
+                {post.title}
               </h1>
             </header>
-            {post.frontmatter.featuredimage && (
+            {post.feature_image && (
               <div className="post-content-image">
                 <GatsbyImage
-                  image={getImage(post.frontmatter.featuredimage)}
+                  image={getImage(post.feature_image)}
                   className="lg:mb-2 overflow-hidden rounded-xl"
-                  alt={post.frontmatter.title}
+                  alt={post.title}
                 />
               </div>
             )}
@@ -94,7 +94,7 @@ const BlogPost = props => {
               className="post-content-body text-[#000000]"
               dangerouslySetInnerHTML={{ __html: post.html }}
             />
-            <div className="flex items-center justify-between pt-8">
+            {/* <div className="flex items-center justify-between pt-8">
               <div>
                 <a
                   style={{
@@ -137,7 +137,7 @@ const BlogPost = props => {
                   <img src={RightIcon} alt="RightIcon" width={30} height={30} />
                 </a>
               </div>
-            </div>
+            </div> */}
           </article>
         </div>
       </main>
@@ -154,19 +154,8 @@ export const pageQuery = graphql`
         title
       }
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
-      id
-      html
-      frontmatter {
-        title
-        date(formatString: "MMMM DD, YYYY")
-        description
-        featuredimage {
-          childImageSharp {
-            gatsbyImageData(layout: FULL_WIDTH)
-          }
-        }
-      }
+    ghostPost(slug: { eq: $slug }) {
+    ...GhostPostFields
     }
   }
 `

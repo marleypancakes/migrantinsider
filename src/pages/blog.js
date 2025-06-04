@@ -7,8 +7,8 @@ import { graphql } from "gatsby"
 
 const Blog = ({ data }) => {
   console.log("data", data)
-  let HeaderPost = data?.allMarkdownRemark?.edges[0]
-  let otherPosts = data?.allMarkdownRemark?.edges.slice(1)
+  let HeaderPost = data?.allGhostPost?.edges[0]
+  let otherPosts = data?.allGhostPost?.edges.slice(1)
 
   return (
     <Layout>
@@ -25,29 +25,16 @@ const Blog = ({ data }) => {
 export default Blog
 
 export const WorkPageQuery = graphql`
-  query IndexPage {
-    allMarkdownRemark(
-      filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
-      limit: 30
-      sort: { frontmatter: { date: DESC } }
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-          }
-          frontmatter {
-            date(formatString: "DD:MM:YYYY hh:mm a")
-            title
-            description
-            featuredimage {
-              childImageSharp {
-                gatsbyImageData
-              }
+    query GhostPostQuery {
+        allGhostPost(
+            sort: { order: DESC, fields: [published_at] }
+            limit: 10
+        ) {
+            edges {
+                node {
+                    ...GhostPostFields
+                }
             }
-          }
         }
-      }
     }
-  }
 `
