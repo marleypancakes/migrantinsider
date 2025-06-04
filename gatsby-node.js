@@ -1,9 +1,9 @@
 const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
+const { createFilePath, createRemoteFileNode } = require(`gatsby-source-filesystem`)
 
-exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
-  // const blogPost = path.resolve(`./src/templates/blog-post.js`)
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  // const { createPage } = actions
+  const postTemplate = path.resolve(`src/templates/blog-post.js`);
   return graphql(
     `
       {
@@ -45,6 +45,7 @@ exports.createPages = ({ graphql, actions }) => {
     `
   ).then(result => {
     if (result.errors) {
+      reporter.panicOnBuild('Error while running GraphQL Query');
       throw result.errors
     }
       // Extract query results
@@ -52,24 +53,19 @@ exports.createPages = ({ graphql, actions }) => {
       const authors = result.data.allGhostAuthor.edges;
       const pages = result.data.allGhostPage.edges;
       const posts = result.data.allGhostPost.edges;
-      console.log(posts);
-      console.log("FUCKFUCKFUCKFUCKFUCK");
-    
+
     // const posts = result.data.allMarkdownRemark.edges
     // Template For blog-post
-    // const blogPost = posts.filter(item => item.node.frontmatter.templateKey === 'blog-post')
-    posts.forEach((post, index) => {
+    posts.forEach(({node}) => {
 
-      post.url = `/${post.node.slug}/`;
+      node.url = `/${node.slug}/`;
 
-      createPage({
+      actions.createPage({
         // path: post.node.fields.slug.split('/').slice(2, -1).join('/') === '' ? '/' : `/${post.node.fields.slug.split('/').slice(2, -1).join('/')}`,
-        path: post.url,
-        component: path.resolve(
-          `src/templates/blog-post.js`
-        ),
+        path: node.url,
+        component: postTemplate,
         context: {
-          slug: post.node.slug,
+          slug: node.slug,
           limit: 10,
           skip:0,
         }, 
@@ -79,14 +75,31 @@ exports.createPages = ({ graphql, actions }) => {
     return null
   })
 }
-// exports.onCreateNode = ({ node, actions, getNode }) => {
-//   const { createNodeField } = actions
-//   // if (node.internal.type === `MarkdownRemark`) {
-//     const value = createFilePath({ node, getNode })
-//     createNodeField({
-//       name: `slug`,
-//       node,
-//       value,
-//     })
-//   // }
-// }
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  
+  createTypes(`
+    type GhostPost implements Node {
+      featuredImg: File @link(from: "fields.localFile")
+    }
+  `)
+}
+exports.onCreateNode = async ({ node, actions: {createNode, createNodeField}, getNode, createNodeId, getCache, }) => {
+    if(node.internal.type === "GhostPost" && node.feature_image !== null)
+    {
+      // console.log("Creating Ghost Post Node")
+      const fileNode = await createRemoteFileNode({
+        url: node.feature_image,
+        parentNodeId: node.id,
+        createNode,
+        createNodeId,
+        getCache,
+      })
+
+      if(fileNode) {
+        createNodeField({ node, name: "localFile", value: fileNode.id })
+        // console.log("Featured image node created at "+ node.feature_image);
+      }
+    }
+}

@@ -48,6 +48,11 @@ export const ghostPostFields = graphql`
         slug
         featured
         feature_image
+        featuredImg {
+            childImageSharp{
+                gatsbyImageData
+            }
+        }
         excerpt
         custom_excerpt
         visibility

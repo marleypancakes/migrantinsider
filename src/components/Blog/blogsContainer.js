@@ -8,13 +8,11 @@ import { Link } from "gatsby"
 const BlogsContainer = ({ data }) => {
   let posts = data?.map(item => {
     return {
-      featuredimage: item.node.feature_image,
+      featuredimage: item.node.featuredImg,
       title: item.node.title,
       slug: item.node.slug,
     }
   })
-  console.log("Data ", data)
-  console.log("post", posts)
   // const image = getImage(post.node.frontmatter.featuredimage)
 
   return (
@@ -25,7 +23,7 @@ const BlogsContainer = ({ data }) => {
             <div key={i}>
               <div className="overflow-hidden  rounded-xl xxs:w-full ">
                 <Link
-                  to={blog.slug}
+                  to={'../' + blog.slug}
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -45,7 +43,7 @@ const BlogsContainer = ({ data }) => {
               </div>
               <div className="m-6">
                 <Link
-                  to={blog.slug}
+                  to={'../' + blog.slug}
                   style={{
                     textDecoration: "none",
                     color: "black",
