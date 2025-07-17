@@ -14,7 +14,8 @@ export default async function signInHandler(req, res) {
     console.log("URL: ", url)
     const email = req.body.email;
     console.log("Email: ", email)
-    let response = await fetch (url,
+    let response;
+    response = await fetch (url,
         {
             method: 'POST',
             headers: {
@@ -26,9 +27,11 @@ export default async function signInHandler(req, res) {
                 integrityToken: integrityToken
                 }
             )
-        }).then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            res.send(data);
-        }).catch((err) => console.error(err.message))
+        }).then((response) => {
+            console.log(response.status)
+            res.sendStatus(response.status)})
+        // .then((data) => {
+        //     console.log(data);
+        //     res.send(data); })
+        .catch((err) => console.error(err.message))
 }

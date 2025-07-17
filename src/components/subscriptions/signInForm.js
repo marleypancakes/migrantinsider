@@ -1,11 +1,9 @@
 import React from "react"
-import Button from "../Atoms/button"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
 const SignInForm = () => {
     const [serverResponse, setServerResponse] = React.useState(``)
-
     return (
         <Formik
         initialValues={{name: '',  email: ''}}
@@ -22,32 +20,33 @@ const SignInForm = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {          
           setTimeout(async () => {
-            const response= await window
+            const response = await window
                 .fetch(`../../api/signin`, {
                     method: `POST`,
                     headers: {
                       "content-type": "application/json",
                     },
                     body: JSON.stringify(values, null, 2),
-                });
-            if(!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const jsonData = await response.json();
-
-            setSubmitting(false);
-            setServerResponse(jsonData);
+                }).then((response) => {
+                  console.log("Inside Promise: ", response.status);
+                  return response.status;
+                })
+              setSubmitting(false);
+            setServerResponse(response);
             console.log(serverResponse);
-            if(serverResponse == 200) {
+            console.log("Outside Promise:", response);
+            if(response === 201) {
               document.getElementById("signinsuccess").style.display = "block";
-              
+            }
+            else {
+              console.error("Invalid Response: ", response.status)
             }
           }, 400);
         }}
       >
         {({ isSubmitting }) => (
             <Form className="grid-cols-1 p-1">
-              <img src={TitleImage}></img>
+              <img src={TitleImage} alt="Migrant Insider Logo"></img>
               <h1 className="w-100 h-auto text-center  text-3xl font-extrabold leading-tight text-[#000000] lg:mb-6 lg:text-4xl dark:">
                 Sign In
               </h1>

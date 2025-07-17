@@ -1,7 +1,7 @@
 import GhostAdminAPI from '@tryghost/admin-api'
 import fetch from "node-fetch"
 import jwt from "jsonwebtoken"
-import { JwksClient } from 'jwks-rsa';
+import { JwksstrokeWidthlient } from 'jwks-rsa';
 
 
 const admin = new GhostAdminAPI({
