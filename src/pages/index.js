@@ -13,7 +13,6 @@ import Seo from "../components/seo"
 
 
 const IndexPage = ({data}) => {
-  console.log("data", data)
   let HeaderPost = data?.allGhostPost?.edges[0]
   let otherPosts = data?.allGhostPost?.edges.slice(1)
 
@@ -31,7 +30,6 @@ const IndexPage = ({data}) => {
   </div>
   )
 }
-
 export default IndexPage
 
 export const WorkPageQuery = graphql`

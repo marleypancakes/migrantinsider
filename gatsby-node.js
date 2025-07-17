@@ -6,43 +6,41 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const postTemplate = path.resolve(`src/templates/blog-post.js`);
   return graphql(
     `
-      {
-          allGhostPost(sort: { order: ASC, fields: published_at }) {
-              edges {
-                  node {
-                      slug
-                  }
-              }
-          }
-          allGhostTag(sort: { order: ASC, fields: name }) {
-              edges {
-                  node {
-                      slug
-                      url
-                      postCount
-                  }
-              }
-          }
-          allGhostAuthor(sort: { order: ASC, fields: name }) {
-              edges {
-                  node {
-                      slug
-                      url
-                      postCount
-                  }
-              }
-          }
-          allGhostPage(sort: { order: ASC, fields: published_at }) {
-              edges {
-                  node {
-                      slug
-                      url
-                  }
-              }
-          }
+{
+  allGhostPost(sort: {published_at: ASC}) {
+    edges {
+      node {
+        slug
       }
-
-    `
+    }
+  }
+  allGhostTag(sort: {name: ASC}) {
+    edges {
+      node {
+        slug
+        url
+        postCount
+      }
+    }
+  }
+  allGhostAuthor(sort: {name: ASC}) {
+    edges {
+      node {
+        slug
+        url
+        postCount
+      }
+    }
+  }
+  allGhostPage(sort: {published_at: ASC}) {
+    edges {
+      node {
+        slug
+        url
+      }
+    }
+  }
+}    `
   ).then(result => {
     if (result.errors) {
       reporter.panicOnBuild('Error while running GraphQL Query');

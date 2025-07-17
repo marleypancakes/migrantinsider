@@ -17,3 +17,19 @@ import "./src/styles/global.css"
 import Modal from "react-modal";
 
 Modal.setAppElement("#___gatsby");
+
+export default async function onClientEntry () {
+
+    const token = window.location.pathname;
+
+    const response = await window
+    .fetch(`../../api/validate`, {
+        method: `POST`,
+        headers: {
+            "content-type": "application/json",
+        },
+        body: token,
+    })
+    .then(res => res.json())
+    console.log("Response received by browser", response)
+}

@@ -4,7 +4,6 @@ import React from "react"
 import Fade from "react-reveal/Fade"
 
 const BlogHeader = ({ post }) => {
-  console.log(post);
   const image = getImage(post.node.featuredImg)
   // console.log(image);
   return (
@@ -28,7 +27,7 @@ const BlogHeader = ({ post }) => {
           </div>
           <div
             data-gatsby-image-wrapper=""
-            class="my-5 mr-5 xxs:w-full xs:w-full sm:w-full lg:w-full"
+            className="my-5 mr-5 xxs:w-full xs:w-full sm:w-full lg:w-full"
           >
             <div className="overflow-hidden  rounded-xl xxs:w-full">
               {post.node.feature_image && (

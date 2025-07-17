@@ -23,19 +23,24 @@ const SignInForm = () => {
         onSubmit={(values, { setSubmitting }) => {          
           setTimeout(async () => {
             const response= await window
-                .fetch(`../../api/ghost`, {
+                .fetch(`../../api/signin`, {
                     method: `POST`,
                     headers: {
                       "content-type": "application/json",
                     },
                     body: JSON.stringify(values, null, 2),
-                })
-                .then(res => res.json())
+                });
+            if(!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+
             setSubmitting(false);
-            setServerResponse(response);
+            setServerResponse(jsonData);
             console.log(serverResponse);
-            if(serverResponse == 200){
-              document.getElementById()
+            if(serverResponse == 200) {
+              document.getElementById("signinsuccess").style.display = "block";
+              
             }
           }, 400);
         }}
@@ -53,20 +58,14 @@ const SignInForm = () => {
               <button type="submit" disabled={isSubmitting} className="bg-darkorange rounded p-2 text-white w-full">
                 Continue
               </button>
-              <div id="signinsuccess grid-cols-1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="gh-portal-icon gh-portal-icon-envelope">
-                  <defs>
-                    <style>.a{"fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1px;"}</style>
-                  </defs>
-                  <rect class="a" x="0.75" y="4.5" width="22.5" height="15" rx="1.5" ry="1.5"></rect>
-                  <line class="a" x1="15.687" y1="9.975" x2="19.5" y2="13.5"></line>
-                  <line class="a" x1="8.313" y1="9.975" x2="4.5" y2="13.5"></line>
-                  <path class="a" d="M22.88,5.014l-9.513,6.56a2.406,2.406,0,0,1-2.734,0L1.12,5.014"></path>
+              <div id="signinsuccess" className="grid grid-cols-1 justify-items-center hidden w-100 h-100 z-99">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <path d="M44 12C44 9.8 42.2 8 40 8H8C5.8 8 4 9.8 4 12V36C4 38.2 5.8 40 8 40H40C42.2 40 44 38.2 44 36V12ZM40 12L24 22L8 12H40ZM40 36H8V16L24 26L40 16V36Z" fill="black"/>
                 </svg>
                 <h2>Now check your email!</h2>
               </div>
             </Form>
-        )};
+        )}
       </Formik>    
     )
 }
