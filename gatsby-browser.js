@@ -24,16 +24,21 @@ export const onClientEntry = async () => {
     const urlParams = new URLSearchParams(queryString);
     const token = urlParams.get("token");
 
-    console.log("Token: ", token)
+    if(token) {
 
-    const response = await window
-    .fetch(`../../api/validate`, {
+        console.log("Token: ", token)
+        
+    const data = JSON.stringify({ token })
+    console.log("Request body: ", data)
+    
+    await window.fetch(`../../api/validate`, {
         method: `POST`,
         headers: {
-            "content-type": "application/json",
+            'content-type': 'application/json',
         },
-        body: token,
+        body: data,
     })
-    
-    .then(response => console.log("Response received by browser", response))
+    .then(response => response.json())
+    .then(response => console.log(response))
+}
 }
