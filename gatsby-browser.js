@@ -14,13 +14,17 @@ import "@fontsource/noto-serif/400.css"
 
 import "./src/styles/global.css"
 
-import Modal from "react-modal";
+const Modal = require("react-modal");
 
 Modal.setAppElement("#___gatsby");
 
-export default async function onClientEntry () {
+export const onClientEntry = async () => {
 
-    const token = window.location.pathname;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const token = urlParams.get("token");
+
+    console.log("Token: ", token)
 
     const response = await window
     .fetch(`../../api/validate`, {
@@ -30,6 +34,6 @@ export default async function onClientEntry () {
         },
         body: token,
     })
-    .then(res => res.json())
-    console.log("Response received by browser", response)
+    
+    .then(response => console.log("Response received by browser", response))
 }
