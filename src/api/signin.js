@@ -1,4 +1,8 @@
 export default async function signInHandler(req, res) {
+
+    // Using the local server will fail, because it won't do email
+    // On production, will give 201 only for subscribers
+    
     console.log("signin request: ", req.body)
 
     let integrityToken = await fetch(process.env.GHOST_ADMIN_API_URL+'/members/api/integrity-token',
@@ -9,11 +13,13 @@ export default async function signInHandler(req, res) {
             method: 'GET'}
         )
     integrityToken = await integrityToken.text()
-    console.log("Integrity Token: ", integrityToken)
-    const url = process.env.GHOST_FRONTEND_URL+'/members/api/send-magic-link'
-    console.log("URL: ", url)
+    console.log("[Sign In] Integrity Token: ", integrityToken)
+    const url = process.env.GHOST_ADMIN_API_URL+'/members/api/send-magic-link'
+    console.log("[Sign In] URL: ", url)
     const email = req.body.email;
-    console.log("Email: ", email)
+    console.log("[Sign In] Email: ", email)
+
+    // Send request to server
     let response;
     response = await fetch (url,
         {

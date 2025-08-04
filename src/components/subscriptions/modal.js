@@ -8,6 +8,7 @@ const customStyles = {
     overflow: 'auto',
     padding: '20px',
     height: 'fit-content',
+    width: 'fit-content',
     left: '50%',
     right: 'auto',
     top: '50%',
@@ -28,9 +29,9 @@ const MyModal = ({ isOpen, onRequestClose, children }) => {
       onAfterOpen={() => {document.body.style.overflow = 'hidden'; document.body.style.position = 'fixed'}}
       onAfterClose={() => {document.body.style.overflow = 'unset'; document.body.style.position = 'unset'}}
     >
-      <div className="h-fit grid grid-flow-row justify-items-end gap-3">
+      <div className="grid justify-items-center gap-3">
         {children}
-        <button onClick={onRequestClose} className="w-20 p-2 bg-darkorange rounded ">Close</button>
+        <button onClick={onRequestClose} className="w-40 p-2 bg-darkorange text-white rounded ">Close</button>
       </div>  
     </ReactModal>
   );

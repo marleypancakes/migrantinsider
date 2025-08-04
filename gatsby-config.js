@@ -105,5 +105,14 @@ module.exports = {
 				contentApiKey: '66d1511ea9fd2fad26cd1abaad',
       },
     },
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: ["Price"],
+        secretKey: process.env.STRIPE_SECRET_KEY,
+        downloadFiles: false,
+      },
+    },
   ],
 }

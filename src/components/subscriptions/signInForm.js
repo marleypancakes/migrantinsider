@@ -28,18 +28,20 @@ const SignInForm = () => {
                     },
                     body: JSON.stringify(values, null, 2),
                 }).then((response) => {
+                  console.log("[On Submit] Full response, inside", response);
                   console.log("Inside Promise: ", response.status);
                   return response.status;
                 })
               setSubmitting(false);
+            console.log("[On Submit] Response: ", response);
             setServerResponse(response);
-            console.log(serverResponse);
-            console.log("Outside Promise:", response);
+            console.log("[On Submit] Server Response", serverResponse);
+            console.log("[On Submit] Outside Promise:", response);
             if(response === 201) {
               document.getElementById("signinsuccess").style.display = "block";
             }
             else {
-              console.error("Invalid Response: ", response.status)
+              console.error("Invalid Response: ", response)
             }
           }, 400);
         }}

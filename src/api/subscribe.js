@@ -8,18 +8,25 @@ const admin = new GhostAdminAPI({
 });
 
 export default async function subscribeHandler(req, res) {
-    console.log(req.body)
+    console.log("[Subscribe] Request Body: ", req.body)
 
     // const members = await admin.members.browse({limit: "10"})
     // console.log(members)
 
-    let data = {email: req.body.email, name: req.body.name, newsletters: [{id: '6840cc3014b8dd0001d83e98'}]}
+    let data = {email: req.body.email, name: req.body.name, newsletters: [{name: 'Migrant Insider'}]}
     let options = {
         send_email: true,
         email_type: 'subscribe'
     }
-    const newMember = await admin.members.add(data, options);
-    console.log(newMember)
-    res.send(newMember)
+    // if user selects free tier, create free member in ghost and send confirmation email
+    await admin.members.add(data, options)
+    .then(response => {
+        console.log("Member added successfully: ", response)
+        res.send(response)
+    })
+    .catch((err)=> {
+        console.error("Error adding member: ", err.message)
+        res.send(err)
+    })
 }
 
