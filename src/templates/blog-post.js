@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import { useUser } from '../context/UserContext'
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import { graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import LeftIcon from "../images/left-icon.svg"
-import RightIcon from "../images/right-icon.svg"
 import styled from "styled-components"
+import  PremiumContent  from "../components/PremiumContent"
+// import LeftIcon from "../images/left-icon.svg"
+// import RightIcon from "../images/right-icon.svg"
 
 const StyledDiv = styled.div`
   & h1 {
@@ -33,7 +35,7 @@ const StyledDiv = styled.div`
   }
 `
 const BlogPost = props => {
-  const { pageContext } = props
+  // OPTIONAL PREVIOUS/NEXT BUTTONS
   // const nextSlug = pageContext.next ? pageContext.next.fields.slug : "/"
   // const previousSlug = pageContext.previous
   //   ? pageContext.previous.fields.slug
@@ -49,17 +51,42 @@ const BlogPost = props => {
   //     : false
   //   : false
 
+  const { pageContext } = props
   const post = props.data.ghostPost
   let date = new Date(post.published_at) // assuming post.frontmatter.date is in ISO string format
   let options = { year: "numeric", month: "short", day: "numeric" }
   let formattedDate = date.toLocaleDateString("en-US", options)
-  let titlaDate = date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
-
   let isoDate = date.toISOString().split("T")[0] // get the date part of the ISO string
+
+  const { user, isPaidUser, loading, isLoggedIn } = useUser;
+  const [showFullContent, setShowFullContent] = useState(false);
+
+  useEffect(() => {
+    const canViewFull = isPaidUser || post.visibility === 'public' || 
+                       !post.tiers?.some(tier => tier.type === 'paid');
+    setShowFullContent(canViewFull);
+  }, [isPaidUser, post, loading]);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  function getContent (){
+    // Public Post - everyone can see
+    if(post.visibility === "public" || !post.tiers?.some(tier => tier.type === "paid")) {
+      return (
+        post.html
+      )
+    }
+  
+    // Not logged in
+    if (!isLoggedIn) {
+      return (
+        post.excerpt
+      )
+    }
+
+  }
 
   return (
     <Layout>
@@ -85,7 +112,7 @@ const BlogPost = props => {
               </div>
             )}
             <p className="text-base text-gray-500 dark:text-gray-400 lg:mb-2">
-              <time dateTime={isoDate} title={titlaDate}>
+              <time dateTime={isoDate} title="Date">
                 {formattedDate}
               </time>
             </p>
@@ -94,6 +121,7 @@ const BlogPost = props => {
               className="post-content-body text-[#000000]"
               dangerouslySetInnerHTML={{ __html: post.html }}
             />
+            <PremiumContent post={post} />
             {/* <div className="flex items-center justify-between pt-8">
               <div>
                 <a

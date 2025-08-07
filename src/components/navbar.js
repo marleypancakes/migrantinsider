@@ -8,14 +8,14 @@ import TitleImage from "../../static/img/migrantinsidertitle.png"
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false)
 
-  const [isModal1Open, setIsModal1Open] = useState(false);
-  const [isModal2Open, setIsModal2Open] = useState(false);
+  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
+  const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
 
-  const handleOpenModal1 = () => setIsModal1Open(true);
-  const handleCloseModal1 = () => setIsModal1Open(false);
+  const handleOpenSubscribeModal = () => setIsSubscribeModalOpen(true);
+  const handleCloseSubscribeModal = () => setIsSubscribeModalOpen(false);
 
-  const handleOpenModal2 = () => setIsModal2Open(true);
-  const handleCloseModal2 = () => setIsModal2Open(false);
+  const handleOpenSigninModal = () => setIsSigninModalOpen(true);
+  const handleCloseSigninModal = () => setIsSigninModalOpen(false);
 
   return (
     <nav className="bg-transparent">
@@ -57,19 +57,19 @@ const Navbar = () => {
                 >
                   About
                 </Link>
-                <Button onClick={handleOpenModal1} title="Subscribe" className="bg-darkorange"
+                <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
                 >
                   
                 </Button>
-                <Button onClick={handleOpenModal2} title="Sign In"
+                <Button onClick={handleOpenSigninModal} title="Sign In"
                 >
                 
                 </Button>
-                <MyModal isOpen={isModal1Open} onRequestClose={handleCloseModal1}>
+                <MyModal isOpen={isSubscribeModalOpen} onRequestClose={handleCloseSubscribeModal}>
                   <SubscribeForm></SubscribeForm>
                 </MyModal>
 
-                <MyModal isOpen={isModal2Open} onRequestClose={handleCloseModal2}>
+                <MyModal isOpen={isSigninModalOpen} onRequestClose={handleCloseSigninModal}>
                   <SignInForm></SignInForm>
                 </MyModal>
               </div>
@@ -126,19 +126,19 @@ const Navbar = () => {
             >
               About
             </a>
-            <Button onClick={handleOpenModal1} title="Subscribe" className="bg-darkorange"
+            <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
                 >
                   
                 </Button>
-                <Button onClick={handleOpenModal2} title="Sign In" className="bg-darkorange"
+                <Button onClick={handleOpenSigninModal} title="Sign In" className="bg-darkorange"
                 >
                 
                 </Button>
-                <MyModal isOpen={isModal1Open} onRequestClose={handleCloseModal1}>
+                <MyModal isOpen={isSubscribeModalOpen} onRequestClose={handleCloseSubscribeModal}>
                   <SubscribeForm></SubscribeForm>
                 </MyModal>
 
-                <MyModal isOpen={isModal2Open} onRequestClose={handleCloseModal2}>
+                <MyModal isOpen={isSigninModalOpen} onRequestClose={handleCloseSigninModal}>
                   <SignInForm></SignInForm>
                 </MyModal>
 

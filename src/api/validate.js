@@ -1,7 +1,6 @@
 import { JwksClient } from "jwks-rsa";
 import { decode, verify, jwt } from "jsonwebtoken"
 import GhostAdminAPI from '@tryghost/admin-api'
-import createTierWithRawAPI from "./createTier";
 
 // CHANGE THIS URI IN PRODUCTION
 const client = new JwksClient({
@@ -27,7 +26,7 @@ const validateJwt = (token, signingKey) => {
     });
 };   
 // Check if member is a MI paid subscriber based on label attached to Ghost membership.
-function hasPaidSubscriptions(member) {
+export function hasPaidSubscriptions(member) {
 // Check if member has the label "Migrant Insider Subscriber"
 return member.labels && member.labels.some(label => 
     label.name.toLowerCase() === "migrant insider subscriber"
