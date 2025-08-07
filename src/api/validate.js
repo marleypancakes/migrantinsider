@@ -1,8 +1,9 @@
 import { JwksClient } from "jwks-rsa";
-import { decode, verify } from "jsonwebtoken"
+import { decode, verify, jwt } from "jsonwebtoken"
 import GhostAdminAPI from '@tryghost/admin-api'
 import createTierWithRawAPI from "./createTier";
 
+// CHANGE THIS URI IN PRODUCTION
 const client = new JwksClient({
     jwksUri: "http://127.0.0.1:2368/members/.well-known/jwks.json",
 });
@@ -13,50 +14,46 @@ const admin = new GhostAdminAPI({
     version: "v5.0",
 });
 
+const validateJwt = (token, signingKey) => {
+    return new Promise((resolve, reject) => {
+        verify(token, signingKey, { algorithm: 'RS256' }, (err, decoded) => {
+            if (err) {
+                console.error("Token validation failed:", err);
+                reject(err);
+            } else {
+                resolve(decoded);
+            }
+        });
+    });
+};   
+// Check if member is a MI paid subscriber based on label attached to Ghost membership.
+function hasPaidSubscriptions(member) {
+// Check if member has the label "Migrant Insider Subscriber"
+return member.labels && member.labels.some(label => 
+    label.name.toLowerCase() === "migrant insider subscriber"
+);
+}
+
 export default async function confirmToken(req, res){
     try {
-
-        // console.log("Request: ", req.body);
-        let encryptedJWT = req.body != null ? req.body.token : ""
+        // Get encoded JWT from request body
+        let JWT = req.body != null ? req.body.token : ""
         
-        const decoded = decode(encryptedJWT, { complete: true });
+        // Decode JWT
+        const decoded = decode(JWT, { complete: true });
         
-        // console.log("Decoded", decoded)
-        // console.log("Decoded Header:", decoded?.header);
-    
+        //Get Signing Key from [GHOST FRONTEND URL]/members/.well-known/jwks.json
         const key = await client.getSigningKey(decoded.header.kid)
-        // console.log("Key: ", key)
         const signingKey = key.getPublicKey();
 
-    //     const getKey = (header, callback) => {
-    //         console.log("Requested kid:", header.kid)
-    //         client.getSigningKey(header.kid, (err, key) => {
-    //         if (err) callback("poopoopoo");
-    //         const signingKey = key.publicKey || key.rsaPublicKey;
-    //         console.log("SigningKey: ", signingKey)
-    //         callback(null, signingKey);
-    //     });
-    // }
-
-    const validateJwt = (token) => {
-        return new Promise((resolve, reject) => {
-            verify(token, signingKey, { algorithm: 'RS256' }, (err, decoded) => {
-                if (err) {
-                    console.error("Token validation failed:", err);
-                    reject(err);
-                } else {
-                    resolve(decoded);
-                }
-            });
-        });
-    };    
-        const validationResult = await validateJwt(encryptedJWT)
+        
+        const validationResult = await validateJwt(JWT, signingKey)
         console.log("Validate JWT result: ", validationResult)
 
+        // Get member email from validated JWT
         const email = validationResult.sub
-        // console.log("Email: ", email)
 
-        // Using the Ghost Admin API SDK
+        // Retrieve member object from Ghost Admin API via email
         const members = await admin.members.browse({
             filter: `email:'${email}'`,
             include: "paid"
@@ -64,31 +61,43 @@ export default async function confirmToken(req, res){
 
         // The member will be in members[0] if found
         const member = members.length > 0 ? members[0] : null;
-        // console.log("Member: ", member)
 
-        function hasPaidSubscriptions(member) {
-            // Check if member has subscriptions array
-            if (!member.subscriptions || !Array.isArray(member.subscriptions)) {
-                return false;
-            }
-            // Check for active paid subscriptions
-            return member.subscriptions.some(subscription => {
-                // Must be active status
-                const isActive = subscription.status === 'active';
-                return isActive;
-            });
+        if (!member) {
+            res.status(401).json({message: 'Member not found'})
         }
 
-        if (hasPaidSubscriptions(member)) {
+        const isPaidMember = hasPaidSubscriptions(member)
+        if (isPaidMember) {
             console.log('Member has active paid subscriptions');
         } else {
             console.log('Member has no paid subscriptions');
         }
 
+        const token = jwt.sign(
+            {
+            memberId: member.id,
+            email: member.email,
+            isPaidMember: isPaidMember,
+            subscriptionStatus: isPaidMember ? 'paid' : 'free'
+            },
+            process.env.JWT_SECRET,
+            {expiresIn: '7d'}
+        );
+
+        res.setHeader('Set-Cookie', [
+            `auth_token=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${7 * 24 * 60 * 60}`,
+            ]);
+        
         // Send proper JSON response
-        res.json({ 
+        res.status(200).json({ 
             success: true, 
-            data: validationResult 
+            user:{
+                id: member.id,
+                email: member.email,
+                name: member.name,
+                isPaidUser: isPaidMember,
+                subscriptionStatus: isPaidMember ? 'paid' : 'free'
+            } 
         });
     } catch (error) {
         console.error("Validation error:", error);

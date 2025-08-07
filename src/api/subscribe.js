@@ -10,10 +10,11 @@ const admin = new GhostAdminAPI({
 export default async function subscribeHandler(req, res) {
     console.log("[Subscribe] Request Body: ", req.body)
 
-    // const members = await admin.members.browse({limit: "10"})
-    // console.log(members)
-
-    let data = {email: req.body.email, name: req.body.name, newsletters: [{name: 'Migrant Insider'}]}
+    let data = {
+        email: req.body.email, 
+        name: req.body.name, 
+        labels:[{name: "Migrant Insider Free Subscriber"}],
+        newsletters: [{name: 'Migrant Insider'}]}
     let options = {
         send_email: true,
         email_type: 'subscribe'

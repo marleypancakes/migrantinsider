@@ -85,7 +85,7 @@ const SubscribeForm = () => {
             const { error } = await stripe.redirectToCheckout({
               mode: "subscription",
               lineItems: [{ price, quantity: 1 }],
-              successUrl: `${window.location.origin}/page-2/`,
+              successUrl: `${window.location.origin}/success/`,
               cancelUrl: `${window.location.origin}/advanced`,
             })
         

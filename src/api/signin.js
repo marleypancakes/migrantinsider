@@ -36,8 +36,5 @@ export default async function signInHandler(req, res) {
         }).then((response) => {
             console.log(response.status)
             res.sendStatus(response.status)})
-        // .then((data) => {
-        //     console.log(data);
-        //     res.send(data); })
         .catch((err) => console.error(err.message))
 }

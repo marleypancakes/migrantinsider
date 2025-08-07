@@ -11,7 +11,7 @@ const AboutHeader = () => {
           <img alt="Image" src={Image3}></img>
         </div>
         <div className="mt-10 px-8">
-          <h1 className="font-bold text-xl  text-gradient bg-gradient-to-r from-pink to-purple">
+          <h1 className="font-bold text-xl text-gradient bg-gradient-to-r from-pink to-purple">
             What is Holo?
           </h1>
           <h2 className=" text-6xl font-semibold leading-snug xxs:text-lg xs:text-lg sm:text-3xl lg:text-6xl">
