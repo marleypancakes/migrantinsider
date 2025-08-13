@@ -18,7 +18,7 @@ const SignInForm = () => {
           }
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {          
+        onSubmit={(values, { setFieldError, setSubmitting }) => {          
           setTimeout(async () => {
             const response = await window
                 .fetch(`../../api/signin`, {
@@ -39,6 +39,9 @@ const SignInForm = () => {
             console.log("[On Submit] Outside Promise:", response);
             if(response === 201) {
               document.getElementById("signinsuccess").style.display = "block";
+            }
+            else if (response === 400){
+              setFieldError("email", "No member exists with this email address.")
             }
             else {
               console.error("Invalid Response: ", response)

@@ -5,7 +5,11 @@ import SubscribeForm from "./subscriptions/subscribeForm"
 import SignInForm from "./subscriptions/signInForm"
 import Button from "./Atoms/button"
 import TitleImage from "../../static/img/migrantinsidertitle.png"
+import { useUser } from "../context/UserContext"
+import logout  from "../utils/logout"
 const Navbar = () => {
+  const {user, isPaidUser, isLoggedIn} = useUser()
+
   const [openMenu, setOpenMenu] = useState(false)
 
   const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
@@ -16,6 +20,8 @@ const Navbar = () => {
 
   const handleOpenSigninModal = () => setIsSigninModalOpen(true);
   const handleCloseSigninModal = () => setIsSigninModalOpen(false);
+
+  console.log("[Navbar] IsLoggedin? ", isLoggedIn)
 
   return (
     <nav className="bg-transparent">
@@ -57,14 +63,27 @@ const Navbar = () => {
                 >
                   About
                 </Link>
-                <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
-                >
-                  
-                </Button>
-                <Button onClick={handleOpenSigninModal} title="Sign In"
-                >
-                
-                </Button>
+
+                {isLoggedIn ? (
+                <div>
+                  <Link
+                    className="relative after:rounded after:bg-darkorange after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300  opacity-70 hover:opacity-100 px-3 py-2 rounded-md text-sm font-medium font-montserrat"
+                    to="/account"
+                    >
+                      Account
+                  </Link>
+                  <Button onClick={logout} title="Log Out" className="bg-darkorange"></Button>
+                </div>
+                ) : (
+                <div>
+                  <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
+                  >
+                  </Button>
+                  <Button onClick={handleOpenSigninModal} title="Sign In"
+                  >
+                  </Button>
+                </div>
+                )}
                 <MyModal isOpen={isSubscribeModalOpen} onRequestClose={handleCloseSubscribeModal}>
                   <SubscribeForm></SubscribeForm>
                 </MyModal>

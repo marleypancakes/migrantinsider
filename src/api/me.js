@@ -1,40 +1,31 @@
-import { requireAuth } from '../utils/auth-middleware';
+import { requireAuth } from './auth-middleware';
 import GhostAdminAPI from '@tryghost/admin-api';
 import { hasPaidSubscriptions } from './validate';
 
 const api = new GhostAdminAPI({
-    url: process.env.GHOST_URL,
+    url: process.env.GHOST_ADMIN_API_URL,
     key: process.env.GHOST_ADMIN_API_KEY,
     version: 'v5.0'
 });
 
-async function fetchUserSubscriptions(userId) {
-    try {
-        // Fetch member with subscription data
-        const member = await api.members.read(
-            { id: userId }, 
-            { include: ['subscriptions', 'tiers'] }
-        );
-        
-        return member.subscriptions || [];
-    } catch (error) {
-        console.error('Error fetching user subscriptions:', error);
-        return [];
-    }
-}
 
 async function handler(req, res) {
+
   const { user } = req;
   
   // Optionally refresh subscription data from Ghost API
-  const freshSubscriptionData = await fetchUserSubscriptions(user.userId);
-  const currentIsPaid = hasPaidSubscriptions(freshSubscriptionData);
+//   const currentIsPaid = hasPaidSubscriptions(user);
+
+  
+  console.log("[me.js] Current User: ", user)
+//   console.log("[me.js] Fresh Subscription Data: ", freshSubscriptionData)
+//   console.log("[me.js] Is Paid?: ", currentIsPaid)
   
   res.status(200).json({
-    id: user.userId,
+    id: user.memberId,
     email: user.email,
-    isPaidUser: currentIsPaid,
-    subscriptionStatus: currentIsPaid ? 'paid' : 'free',
+    isPaidUser: user.isPaidMember,
+    subscriptionStatus: user.subscriptionStatus,
   });
 }
 

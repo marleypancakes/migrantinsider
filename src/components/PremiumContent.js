@@ -32,7 +32,7 @@ const StyledDiv = styled.div`
 `
   
 const PremiumContent = ({ post }) => {
-    const { user, isPaidUser, loading, isLoggedIn } = useUser;
+    const { user, isPaidUser, loading, isLoggedIn } = useUser();
     const [showFullContent, setShowFullContent] = useState(false);
 
     useEffect(() => {
@@ -45,8 +45,16 @@ const PremiumContent = ({ post }) => {
         return <div className="loading">Loading...</div>;
     }
 
+
+    console.log("[PremiumContent] IsLoggedIn?: ", isLoggedIn)
+    console.log("[PremiumContent] Post: ", post)
+    console.log("[PremiumContent] Post Visibility: ", post.visibility)
+    console.log("[PremiumContent] Post Tiers: ", post.tiers)
+
+
     // Public Post - everyone can see
-    if(post.visibility === "public" || !post.tiers?.some(tier => tier.type === "paid")) {
+    if(post.visibility === "public") {
+        console.log("[PremiumContent] Displaying public post!")
         return (
                 <StyledDiv
                 className="post-content-body text-[#000000]"
@@ -57,6 +65,8 @@ const PremiumContent = ({ post }) => {
 
     // Not logged in
     if (!isLoggedIn) {
+        console.log("[PremiumContent] Private post, user not logged in")
+
         return (
             <div className="post-content">
                 <StyledDiv
@@ -82,6 +92,7 @@ const PremiumContent = ({ post }) => {
     }
 
     if(!isPaidUser) {
+        console.log("[PremiumContent] Premium post, user is free")
         return (
             <div className="post-content">
                 <StyledDiv
@@ -111,12 +122,13 @@ const PremiumContent = ({ post }) => {
             </div>
         )
     }
+    console.log("[PremiumContent] Premium post, user is paid")
 
     // Paid User - show full content
     return (
         <StyledDiv
         className="post-content-body text-[#000000]"
-        dangerouslySetInnerHTML={{ __html: post.excerpt }}
+        dangerouslySetInnerHTML={{ __html: post.html }}
     />   
     )
 }

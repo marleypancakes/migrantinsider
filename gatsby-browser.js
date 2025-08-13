@@ -13,6 +13,8 @@ import "@fontsource/montserrat/900.css"
 import "@fontsource/noto-serif/400.css"
 
 import "./src/styles/global.css"
+import { UserProvider } from "./src/context/UserContext"
+import React from "react"
 
 const Modal = require("react-modal");
 
@@ -41,4 +43,8 @@ export const onClientEntry = async () => {
     .then(response => response.json())
     .then(response => console.log(response))
 }
+}
+
+export const wrapRootElement = ({ element }) => {
+    return <UserProvider>{element}</UserProvider>
 }

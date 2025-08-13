@@ -1,5 +1,5 @@
 import { JwksClient } from "jwks-rsa";
-import { decode, verify, jwt } from "jsonwebtoken"
+import * as jwt from "jsonwebtoken"
 import GhostAdminAPI from '@tryghost/admin-api'
 
 // CHANGE THIS URI IN PRODUCTION
@@ -15,7 +15,7 @@ const admin = new GhostAdminAPI({
 
 const validateJwt = (token, signingKey) => {
     return new Promise((resolve, reject) => {
-        verify(token, signingKey, { algorithm: 'RS256' }, (err, decoded) => {
+        jwt.verify(token, signingKey, { algorithm: 'RS256' }, (err, decoded) => {
             if (err) {
                 console.error("Token validation failed:", err);
                 reject(err);
@@ -36,17 +36,17 @@ return member.labels && member.labels.some(label =>
 export default async function confirmToken(req, res){
     try {
         // Get encoded JWT from request body
-        let JWT = req.body != null ? req.body.token : ""
+        let signinToken = req.body != null ? req.body.token : ""
         
         // Decode JWT
-        const decoded = decode(JWT, { complete: true });
+        const decoded =jwt.decode(signinToken, { complete: true });
         
         //Get Signing Key from [GHOST FRONTEND URL]/members/.well-known/jwks.json
         const key = await client.getSigningKey(decoded.header.kid)
         const signingKey = key.getPublicKey();
 
         
-        const validationResult = await validateJwt(JWT, signingKey)
+        const validationResult = await validateJwt(signinToken, signingKey)
         console.log("Validate JWT result: ", validationResult)
 
         // Get member email from validated JWT

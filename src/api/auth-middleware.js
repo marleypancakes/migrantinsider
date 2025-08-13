@@ -1,6 +1,7 @@
 // src/utils/auth-middleware.js
 import jwt from 'jsonwebtoken';
 
+
 export function extractUserFromCookie(req) {
   try {
     const token = req.headers.cookie

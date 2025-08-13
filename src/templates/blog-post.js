@@ -117,10 +117,10 @@ const BlogPost = props => {
               </time>
             </p>
 
-            <StyledDiv
+            {/* <StyledDiv
               className="post-content-body text-[#000000]"
               dangerouslySetInnerHTML={{ __html: post.html }}
-            />
+            /> */}
             <PremiumContent post={post} />
             {/* <div className="flex items-center justify-between pt-8">
               <div>

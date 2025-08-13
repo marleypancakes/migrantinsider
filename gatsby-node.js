@@ -101,3 +101,14 @@ exports.onCreateNode = async ({ node, actions: {createNode, createNodeField}, ge
       }
     }
 }
+
+// exports.onCreateWebpackConfig = ({ actions }) => {
+//   actions.setWebpackConfig({
+//     resolve: {
+//       fallback: {
+//         crypto: require.resolve("crypto-browserify"), // Use crypto-browserify as a polyfill
+//         stream: 
+//       },
+//     },
+//   });
+// };
