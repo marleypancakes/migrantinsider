@@ -23,6 +23,7 @@ async function handler(req, res) {
   
   res.status(200).json({
     id: user.memberId,
+    name: user.name,
     email: user.email,
     isPaidUser: user.isPaidMember,
     subscriptionStatus: user.subscriptionStatus,

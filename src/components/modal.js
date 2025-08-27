@@ -31,7 +31,7 @@ const MyModal = ({ isOpen, onRequestClose, children }) => {
     >
       <div className="grid justify-items-center gap-3">
         {children}
-        <button onClick={onRequestClose} className="w-40 p-2 bg-darkorange text-white rounded ">Close</button>
+        <button onClick={onRequestClose} className="w-20 p-2 bg-darkorange text-white rounded justify-self-end">Close</button>
       </div>  
     </ReactModal>
   );

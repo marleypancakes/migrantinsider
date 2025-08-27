@@ -75,6 +75,7 @@ export default async function confirmToken(req, res){
         const token = jwt.sign(
             {
             memberId: member.id,
+            name: member.name != null ? member.name : "",
             email: member.email,
             isPaidMember: isPaidMember,
             subscriptionStatus: isPaidMember ? 'paid' : 'free'

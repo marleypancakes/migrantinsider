@@ -1,12 +1,16 @@
 import React, { useState } from "react"
 import { Link } from "gatsby"
-import MyModal from "./subscriptions/modal"
+import MyModal from "./modal"
 import SubscribeForm from "./subscriptions/subscribeForm"
 import SignInForm from "./subscriptions/signInForm"
 import Button from "./Atoms/button"
 import TitleImage from "../../static/img/migrantinsidertitle.png"
 import { useUser } from "../context/UserContext"
 import logout  from "../utils/logout"
+import SubscribeButton from "./subscriptions/subscribeButton"
+import SignInButton from "./subscriptions/signInButton"
+import AccountButton from "./Account/accountButton"
+
 const Navbar = () => {
   const {user, isPaidUser, isLoggedIn} = useUser()
 
@@ -65,32 +69,16 @@ const Navbar = () => {
                 </Link>
 
                 {isLoggedIn ? (
-                <div>
-                  <Link
-                    className="relative after:rounded after:bg-darkorange after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300  opacity-70 hover:opacity-100 px-3 py-2 rounded-md text-sm font-medium font-montserrat"
-                    to="/account"
-                    >
-                      Account
-                  </Link>
+                <div className="flex flex-row">
+                  <AccountButton></AccountButton>
                   <Button onClick={logout} title="Log Out" className="bg-darkorange"></Button>
                 </div>
                 ) : (
-                <div>
-                  <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
-                  >
-                  </Button>
-                  <Button onClick={handleOpenSigninModal} title="Sign In"
-                  >
-                  </Button>
+                <div className="flex flex-row">
+                  <SubscribeButton></SubscribeButton>
+                  <SignInButton></SignInButton>
                 </div>
                 )}
-                <MyModal isOpen={isSubscribeModalOpen} onRequestClose={handleCloseSubscribeModal}>
-                  <SubscribeForm></SubscribeForm>
-                </MyModal>
-
-                <MyModal isOpen={isSigninModalOpen} onRequestClose={handleCloseSigninModal}>
-                  <SignInForm></SignInForm>
-                </MyModal>
               </div>
             </div>
           </div>
@@ -145,21 +133,17 @@ const Navbar = () => {
             >
               About
             </a>
-            <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
-                >
-                  
-                </Button>
-                <Button onClick={handleOpenSigninModal} title="Sign In" className="bg-darkorange"
-                >
-                
-                </Button>
-                <MyModal isOpen={isSubscribeModalOpen} onRequestClose={handleCloseSubscribeModal}>
-                  <SubscribeForm></SubscribeForm>
-                </MyModal>
-
-                <MyModal isOpen={isSigninModalOpen} onRequestClose={handleCloseSigninModal}>
-                  <SignInForm></SignInForm>
-                </MyModal>
+            {isLoggedIn ? (
+                <div>
+                  <AccountButton></AccountButton>
+                  <Button onClick={logout} title="Log Out" className="bg-darkorange"></Button>
+                </div>
+                ) : (
+                <div>
+                  <SubscribeButton></SubscribeButton>
+                  <SignInButton></SignInButton>
+                </div>
+                )}
 
           </div>
         </div>

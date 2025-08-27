@@ -11,9 +11,11 @@ import Navbar from "./navbar"
 
 const Layout = ({ children }) => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar></Navbar>
+      <div className="flex-grow">
       {children}
+      </div>
       <Footer></Footer>
     </div>
   )

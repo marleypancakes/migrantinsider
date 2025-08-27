@@ -16,6 +16,7 @@ export function extractUserFromCookie(req) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return {
       memberId: decoded.memberId,
+      name: decoded.name,
       email: decoded.email,
       isPaidMember: decoded.isPaidMember,
       subscriptionStatus: decoded.subscriptionStatus,
