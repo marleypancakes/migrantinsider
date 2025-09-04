@@ -16,7 +16,7 @@ export default function Tiers(props) {
         const data = useStaticQuery(graphql`
           query ProductPrices {
             prices:   allStripePrice(
-                filter: {product: {id: {in: ["prod_So4hNSdqVzRw0y", "prod_SmVbmi1Km0E8Yc"]}},
+                filter: {id: {in: ["price_1RsSi1IxVmr2FZcZcB45nlRT", "price_1RsSYKIxVmr2FZcZO0rx1Pjv"]},
                         active: {eq: true}}
                 sort: {unit_amount: ASC}
 
