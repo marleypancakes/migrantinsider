@@ -16,8 +16,6 @@ const About = () => {
         description="Migrant Insider is the first and only immigration news outlet in the Beltway."
       ></Seo>
       <AboutPage></AboutPage>
-      <AboutGrid></AboutGrid>
-      <AboutExtra></AboutExtra>
     </Layout>
   )
 }

@@ -4,6 +4,7 @@ import Button from "../Atoms/button"
 import Fade from "react-reveal/Fade"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { Link } from "gatsby"
+import SubscribeButton from "../subscriptions/subscribeButton"
 
 const BlogsContainer = ({ data }) => {
   let posts = data?.map(item => {
@@ -11,6 +12,9 @@ const BlogsContainer = ({ data }) => {
       featuredimage: item.node.featuredImg,
       title: item.node.title,
       slug: item.node.slug,
+      date: item.node.friendly_date,
+      author: item.node.authors[0].name,
+      excerpt: item.node.excerpt.slice(0, 200)
     }
   })
   // const image = getImage(post.node.frontmatter.featuredimage)
@@ -41,7 +45,7 @@ const BlogsContainer = ({ data }) => {
                   />
                 </Link>
               </div>
-              <div className="m-6">
+              <div className="m-6 hover:brightness-150">
                 <Link
                   to={'../' + blog.slug}
                   style={{
@@ -53,8 +57,8 @@ const BlogsContainer = ({ data }) => {
                     {blog.title}
                   </h1>
                 </Link>
-
-                <p className="text-sm opacity-50 mt-2">{blog.description}</p>
+                <p className="text-sm mt-2">{blog.excerpt}...</p>
+                <p className="text-sm mt-2">{blog.date} {'\u2022'} {blog.author}</p>
               </div>
             </div>
           ))}
@@ -64,10 +68,10 @@ const BlogsContainer = ({ data }) => {
         <h2 className=" text-3xl font-bold  text-center">
           STAY AHEAD OF THE CURVE
         </h2>
-        <h3 className="text-lg mt-2 opacity-60  text-center">
+        <h3 className="text-lg my-2 opacity-60  text-center">
           Support immigration news by migrants in Washington, D.C.
         </h3>
-        <div className=" hover:text-white mt-10 flex flex-col items-center justify-center">
+        {/* <div className=" hover:text-white mt-10 flex flex-col items-center justify-center">
           <Input placeholder="Enter your email"></Input>
           <a
             href="#"
@@ -75,7 +79,8 @@ const BlogsContainer = ({ data }) => {
           >
             Join The List
           </a>
-        </div>
+        </div> */}
+        <SubscribeButton></SubscribeButton>
       </div>
     </div>
   )

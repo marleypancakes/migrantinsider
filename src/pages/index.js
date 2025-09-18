@@ -40,6 +40,7 @@ export const WorkPageQuery = graphql`
         ) {
             edges {
                 node {
+                    friendly_date: published_at(formatString: "MMMM D")
                     ...GhostPostFields
                 }
             }

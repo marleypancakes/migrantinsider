@@ -5,8 +5,7 @@
 
 p, input, textarea {
   font-family: "Noto Serif", sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  line-height: 2.5rem;
   color: theme('colors.darkbrown')
 }
 
@@ -58,6 +57,7 @@ a {
 html,
 body {
   overflow-x: hidden;
+  width: 100%;
 }
 
 /* Mobile Nav */

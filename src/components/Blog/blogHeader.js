@@ -17,9 +17,11 @@ const BlogHeader = ({ post }) => {
                 textDecoration: "none",
               }}
             >
-              <h1 className="text-2xl font-simibold">
+              <h1 className="text-2xl font-semibold">
                 {post.node.title}
               </h1>
+              <p className="text-sm mt-2">{post.node.friendly_date} {'\u2022'} {post.node.authors[0].name}</p>
+              <p className="text-sm mt-2 font-thin">{post.node.excerpt.slice(0,200)}...</p>
             </Link>
             {/* <p className="text-lg mt-4 text-white opacity-70 xxs:text-sm sm:text-lg">
               {post.node.frontmatter.description}

@@ -3,7 +3,7 @@ import MyModal from "../modal"
 import SubscribeForm from "./subscribeForm";
 import Button from "../Atoms/button";
 
-const SubscribeButton = () => {
+const SubscribeButton = ({className}) => {
     const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
 
     const handleOpenSubscribeModal = () => setIsSubscribeModalOpen(true);
@@ -11,7 +11,7 @@ const SubscribeButton = () => {
     const handleCloseSubscribeModal = () => setIsSubscribeModalOpen(false);
   
     return(
-        <div>
+        <div className="flex shrink-0">
             <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
             >
             </Button>

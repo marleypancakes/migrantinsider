@@ -95,8 +95,8 @@ const BlogPost = props => {
         description="We have been providing professional repair services in the city since 1993 ,and we have helped thousands of local car owners to restore their vehicles."
       />
       <main className="pt-8 pb-16 lg:pt-16 lg:pb-24">
-        <div className="flex justify-between px-4 mx-auto max-w-screen-xl ">
-          <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+        <div className="flex justify-between px-4 mx-auto max-w-screen-xl min-w-1/2">
+          <article className="mx-auto w-full max-w-4xl text-xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
             <header className="mb-4 lg:mb-6 not-format">
               <h1 className="mb-4 text-3xl font-extrabold leading-tight text-[#000000] lg:mb-6 lg:text-4xl dark:">
                 {post.title}

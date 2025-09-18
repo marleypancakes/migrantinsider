@@ -16,15 +16,6 @@ const Navbar = () => {
 
   const [openMenu, setOpenMenu] = useState(false)
 
-  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
-  const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
-
-  const handleOpenSubscribeModal = () => setIsSubscribeModalOpen(true);
-  const handleCloseSubscribeModal = () => setIsSubscribeModalOpen(false);
-
-  const handleOpenSigninModal = () => setIsSigninModalOpen(true);
-  const handleCloseSigninModal = () => setIsSigninModalOpen(false);
-
   console.log("[Navbar] IsLoggedin? ", isLoggedIn)
 
   return (
@@ -32,9 +23,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-3 py-5 rounded-md">
         <div className="flex items-center justify-between h-16">
           <div className="w-full justify-between flex items-center">
-            <div className="w-1/4">
+            <div className="w-1/4 min-w-96">
             <a
-              className=" flex-shrink-0 font-montserrat font-semibold"
+              className=" flex-shrink-0"
               href="/"
               >
               <img src={TitleImage}></img>
@@ -134,12 +125,12 @@ const Navbar = () => {
               About
             </a>
             {isLoggedIn ? (
-                <div>
+                <div className="flex flex-col space-y-1 items-center">
                   <AccountButton></AccountButton>
                   <Button onClick={logout} title="Log Out" className="bg-darkorange"></Button>
                 </div>
                 ) : (
-                <div>
+                <div className="flex flex-col space-y-5 items-center">
                   <SubscribeButton></SubscribeButton>
                   <SignInButton></SignInButton>
                 </div>
