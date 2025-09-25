@@ -10,6 +10,10 @@ const admin = new GhostAdminAPI({
 export default async function subscribeHandler(req, res) {
     console.log("[Subscribe] Request Body: ", req.body)
 
+
+    const newsletters = await admin.newsletters.browse();
+    console.log(newsletters); // This will log the JSON object containing newsletter details
+
     let data = {
         email: req.body.email, 
         name: req.body.name, 
@@ -23,6 +27,8 @@ export default async function subscribeHandler(req, res) {
     await admin.members.add(data, options)
     .then(response => {
         console.log("Member added successfully: ", response)
+
+
         res.send(response)
     })
     .catch((err)=> {

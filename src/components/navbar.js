@@ -19,11 +19,11 @@ const Navbar = () => {
   console.log("[Navbar] IsLoggedin? ", isLoggedIn)
 
   return (
-    <nav className="bg-transparent">
+    <nav className="bg-transparent border-b">
       <div className="max-w-7xl mx-auto px-3 py-5 rounded-md">
         <div className="flex items-center justify-between h-16">
           <div className="w-full justify-between flex items-center">
-            <div className="w-1/4 min-w-96">
+            <div className="w-1/4 min-w-72">
             <a
               className=" flex-shrink-0"
               href="/"

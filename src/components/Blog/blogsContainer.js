@@ -58,7 +58,7 @@ const BlogsContainer = ({ data }) => {
                   </h1>
                 </Link>
                 <p className="text-sm mt-2">{blog.excerpt}...</p>
-                <p className="text-sm mt-2">{blog.date} {'\u2022'} {blog.author}</p>
+                <p className="text-sm font-semibold mt-2">{blog.date} {'\u2022'} {blog.author}</p>
               </div>
             </div>
           ))}

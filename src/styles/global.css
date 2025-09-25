@@ -31,12 +31,21 @@ button {
 a {
   font-family: "Noto Serif", serif;
   font-weight: 600;
-  font-size: 1rem !important;
+  font-size: 1.25rem !important;
 }
 
+blockquote {
+  border-left-color: #f8d7b4   !important;
+  border-left: solid 4px;
+  font-style: italic;
+  margin: 0 0 2rem 0;
+  padding: .5rem 0 .5rem 2rem;
+  quotes: none;
+  line-height: 2.375;
+}
 @layer base {
   a {
-    color: black;
+    color: #CB5B3B;
   }
   body {
     background-color: #FFF7ED;

@@ -23,9 +23,6 @@ const StyledDiv = styled.div`
     font-weight: 600;
     line-height: 2;
   }
-  & a {
-    color: #6b46c1;
-  }
   & p {
   margin-bottom: 2rem;
   }

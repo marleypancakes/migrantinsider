@@ -62,7 +62,7 @@ const SubscribeForm = () => {
         }}
         validateOnChange={false}
         validateOnBlur={false}
-        onSubmit={async (values, { setSubmitting }) => {          
+        onSubmit={async (values, { setFieldError, setSubmitting }) => {          
 
           if(values.tier == "free"){
             setTimeout(async () => {
@@ -74,10 +74,24 @@ const SubscribeForm = () => {
                 },
                 body: JSON.stringify(values, null, 2),
               })
-              .then(res => res.json)
+              .then((response) => {
+                console.log("[On Submit] Full response, inside", response);
+                console.log("Inside Promise: ", response.status);
+                return response.status;
+              })
               setSubmitting(false);
               setServerResponse(response);
               console.log(serverResponse);
+              if(response === 200) {
+                document.getElementById("subscribesuccess").style.display = "grid";
+                document.getElementById("subscribebody").style.display = "none";
+              }
+              else if (response === 400){
+                setFieldError("email", "A member already exists with this email address.")
+              }
+              else {
+                console.error("Invalid Response: ", response)
+              }
             }, 400);
           } else {
             const stripe = await getStripe()
@@ -96,15 +110,16 @@ const SubscribeForm = () => {
         }}
       >
         {({ isSubmitting }) => (
-            <Form className="w-fit grid-cols-1 p-1 gap-4" name="subscribeform" id="subscribeform">
+            <Form className="w-200 sm:w-fit grid-cols-1 p-1 gap-4" name="subscribeform" id="subscribeform">
                 <img src={TitleImage} className="w-1/2"></img>
                 <h1 className="w-100 h-auto text-center  text-3xl font-extrabold leading-tight text-[#000000]  lg:text-4xl dark:">
                 Subscribe
                 </h1>
-                <div className="w-1/3 grid grid-cols-auto gap-2">
-                <div className="flex justify-between">
+                <div id="subscribebody" className="grid grid cols-auto justify-items-center p-1 gap-4">
+                <div className="grid grid-cols-auto  gap-2 w-1/2">
+                <div className="flex justify-between w-64">
                 <label htmlFor="name">Name</label>
-                <ErrorMessage name="name" component="label" className="block text-right text-sm pb-1"/>
+                <ErrorMessage name="name" component="label" className="block text-right text-sm"/>
                 </div>
                 <Field type="name" name="name" placeholder="Your Name" className=" border p-2 rounded" />
                 <div className="flex justify-between">
@@ -124,15 +139,24 @@ const SubscribeForm = () => {
                     <p className="text-gray-600 h-fit">{tier.description}</p>
                     </div>
                     </label>
-                  )
-                })} */}
+                    )
+                    })} */}
                 <Tiers />
+                    
 
                {/* <ErrorMessage name="tier" component="label" className="block text-right text-sm pb-1"/> */}
                {/* </div> */}
-               <button type="submit" disabled={isSubmitting} className="bg-darkorange rounded p-2 text-white w-40">
+               <button type="submit" disabled={isSubmitting} className="bg-darkorange rounded p-2 text-white w-40 justify-self-center ">
                 Continue
               </button>
+              </div>
+              <div id="subscribesuccess" className="grid grid-col justify-items-center gap-5 hidden w-100 h-100 z-99">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <path d="M44 12C44 9.8 42.2 8 40 8H8C5.8 8 4 9.8 4 12V36C4 38.2 5.8 40 8 40H40C42.2 40 44 38.2 44 36V12ZM40 12L24 22L8 12H40ZM40 36H8V16L24 26L40 16V36Z" fill="black"/>
+                </svg>
+                <h2 className="mt-2">Check your email for a link to confirm your subscription.</h2>
+              </div>
+
             </Form>
         )}
       </Formik>    
