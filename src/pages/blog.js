@@ -28,10 +28,10 @@ export const WorkPageQuery = graphql`
     query GhostPostQuery {
         allGhostPost(
             sort: { order: DESC, fields: [published_at] }
-            limit: 10
         ) {
             edges {
                 node {
+                    friendly_date: published_at(formatString: "MMMM D")
                     ...GhostPostFields
                 }
             }

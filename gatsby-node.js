@@ -4,10 +4,14 @@ const { createFilePath, createRemoteFileNode } = require(`gatsby-source-filesyst
 exports.createPages = async ({ graphql, actions, reporter }) => {
   // const { createPage } = actions
   const postTemplate = path.resolve(`src/templates/blog-post.js`);
+  const tagTemplate = path.resolve(`src/templates/tag.js`)
   return graphql(
     `
 {
-  allGhostPost(sort: {published_at: ASC}) {
+  allGhostPost(
+    sort: {published_at: ASC}
+    filter: {authors: {elemMatch: {name: {eq: "Notes on the Crises"}}}}
+  ) {
     edges {
       node {
         slug
@@ -47,7 +51,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       throw result.errors
     }
       // Extract query results
-      const tags = result.data.allGhostTag.edges;
+      const ghostTags = result.data.allGhostTag.edges;
+      const tags = ["White House", "Courts", "ICE", "Border", "COBOL"]
       const authors = result.data.allGhostAuthor.edges;
       const pages = result.data.allGhostPage.edges;
       const posts = result.data.allGhostPost.edges;
@@ -67,6 +72,22 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           limit: 10,
           skip:0,
         }, 
+      })
+    })
+
+    tags.forEach((tag) => {
+      console.log("Tag From Gatsby-node: " + tag)
+      var slug = tag.toLowerCase(); // Convert to lowercase
+      slug = slug.replace(/\s+/g, "-"); // Replace spaces with hyphens
+      var tagurl = `/tag/${slug}/`;
+
+      actions.createPage({
+        path: tagurl,
+        component: tagTemplate,
+        context: {
+          tag: tag,
+          slug: slug
+        }
       })
     })
   
