@@ -27,8 +27,6 @@ export default async function subscribeHandler(req, res) {
     await admin.members.add(data, options)
     .then(response => {
         console.log("Member added successfully: ", response)
-
-
         res.send(response)
     })
     .catch((err)=> {

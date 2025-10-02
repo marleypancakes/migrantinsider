@@ -18,8 +18,8 @@ const Tag  = ({data, pageContext}) => {
           title="White House - Migrant Insider"
           description="Migrant Insider is the first and only immigration news outlet in the Beltway."
         ></Seo>
-            <header className="mx-auto py-2 mb-4 lg:mb-6 not-format rounded bg-darkorange w-1/2 place-self-center">
-              <h1 className="text-4xl font-extrabold text-white leading-tight text-[#000000] lg:mb-4 lg:text-5xl dark:format-invert text-center">
+            <header className="mx-auto py-2 my-4 lg:mb-6 not-format rounded bg-darkorange w-1/2 place-self-center">
+              <h1 className="uppercase text-4xl font-extrabold text-white leading-tight text-[#000000] lg:mb-4 lg:text-5xl dark:format-invert text-center">
                 {tag}
               </h1>
             </header>

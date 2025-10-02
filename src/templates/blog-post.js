@@ -91,8 +91,8 @@ const BlogPost = props => {
   return (
     <Layout>
       <Seo
-        title="Blog"
-        description="We have been providing professional repair services in the city since 1993 ,and we have helped thousands of local car owners to restore their vehicles."
+        title={post.title}
+        description={post.excerpt}
       />
       <main className="pt-8 pb-16 lg:pt-16 lg:pb-24">
         <div className="flex justify-between px-4 mx-auto max-w-screen-xl min-w-1/2">
@@ -116,56 +116,7 @@ const BlogPost = props => {
                 {formattedDate}
               </time>
             </p>
-
-            {/* <StyledDiv
-              className="post-content-body text-[#000000]"
-              dangerouslySetInnerHTML={{ __html: post.html }}
-            /> */}
             <PremiumContent post={post} />
-            {/* <div className="flex items-center justify-between pt-8">
-              <div>
-                <a
-                  style={{
-                    display: previousLinkStatus ? "flex" : "none",
-                    alignItems: "center",
-                    color: "#131313",
-                  }}
-                  className="text-base	"
-                  href={previousSlug}
-                >
-                  <img src={LeftIcon} alt="LeftIcon" width={30} height={30} />
-                  <span>
-                    {pageContext.previous
-                      ? pageContext.previous.frontmatter.title?.length > 30
-                        ? pageContext.previous.frontmatter.title.slice(0, 30) +
-                          "..."
-                        : pageContext.previous.frontmatter.title
-                      : ""}
-                  </span>
-                </a>
-              </div>
-              <div>
-                <a
-                  style={{
-                    display: nextLinkStatus ? "flex" : "none",
-                    alignItems: "center",
-                    color: "#131313",
-                  }}
-                  className="text-base	"
-                  href={nextSlug}
-                >
-                  <span>
-                    {pageContext.next
-                      ? pageContext?.next?.frontmatter?.title?.length > 30
-                        ? pageContext?.next?.frontmatter?.title?.slice(0, 30) +
-                          "..."
-                        : pageContext?.next?.frontmatter?.title
-                      : ""}
-                  </span>
-                  <img src={RightIcon} alt="RightIcon" width={30} height={30} />
-                </a>
-              </div>
-            </div> */}
           </article>
         </div>
       </main>

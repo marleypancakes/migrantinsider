@@ -128,24 +128,7 @@ const SubscribeForm = () => {
                 </div>
                 <Field type="email" name="email" placeholder="name@example.com" className="border p-2 rounded"  />
                 </div>
-                {/* <div role="group" aria-labelledby="my-radio-group" className="overflow-auto grid-cols-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-100 h-64"> */}
-                {/* {tiers.map((tier, i) => {
-                  return (
-                    <label htmlFor={tier.id}>                    
-                    <Field type="radio" name="tier" className="peer hidden" value={tier.id} id={tier.id}/>
-                    <div className="h-full w-64 relative block p-4 grid gap-[10px] content-start border rounded-lg shadow cursor-pointer peer-checked:shadow-lightorange-500 peer-checked:bg-lightorange">
-                    <div className="text-lg font-semibold h-fit"> {tier.name}</div>
-                    <div className="text-xl font-bold h-fit">${tier.monthly_price ? tier.monthly_price : 0}</div>
-                    <p className="text-gray-600 h-fit">{tier.description}</p>
-                    </div>
-                    </label>
-                    )
-                    })} */}
                 <Tiers />
-                    
-
-               {/* <ErrorMessage name="tier" component="label" className="block text-right text-sm pb-1"/> */}
-               {/* </div> */}
                <button type="submit" disabled={isSubmitting} className="bg-darkorange rounded p-2 text-white w-40 justify-self-center ">
                 Continue
               </button>

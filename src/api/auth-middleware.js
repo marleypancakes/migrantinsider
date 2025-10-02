@@ -1,7 +1,7 @@
 // src/utils/auth-middleware.js
 import jwt from 'jsonwebtoken';
 
-
+//Retrieves User Data from Cookie
 export function extractUserFromCookie(req) {
   try {
     const token = req.headers.cookie
