@@ -99,6 +99,11 @@ module.exports = {
     `gatsby-plugin-offline`,
     `gatsby-plugin-sitemap`,
     {
+      // resolve: `gatsby-source-ghost`,
+      // options: {
+			// 	apiUrl: 'https://localhost:2368.ghost.io',
+			// 	contentApiKey: 'e61bb69430b7e5ac0dafa01565',
+      // },
       resolve: `gatsby-source-ghost`,
       options: {
 				apiUrl: 'https://notes-on-the-crises.ghost.io',
