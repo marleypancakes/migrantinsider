@@ -1,8 +1,5 @@
 import React, { useState } from "react"
 import { Link } from "gatsby"
-import MyModal from "./modal"
-import SubscribeForm from "./subscriptions/subscribeForm"
-import SignInForm from "./subscriptions/signInForm"
 import Button from "./Atoms/button"
 import TitleImage from "../../static/img/migrantinsidertitle.png"
 import { useUser } from "../context/UserContext"
@@ -40,12 +37,12 @@ const Navbar = () => {
                   Home
                 </Link>
 
-                <Link
+                {/* <Link
                   className="relative after:rounded after:bg-darkorange after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300  opacity-70 hover:opacity-100 px-3 py-2 rounded-md text-sm font-medium font-montserrat"
                   to="/podcast"
                 >
                   Podcast
-                </Link>
+                </Link> */}
                 <Link
                   className="relative after:rounded after:bg-darkorange after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300  opacity-70 hover:opacity-100 px-3 py-2 rounded-md text-sm font-medium font-montserrat"
                   to="/blog"
@@ -106,12 +103,12 @@ const Navbar = () => {
               Home
             </a>
 
-            <a
+            {/* <a
               className="px-3 py-3 rounded-md text-m font-medium font-montserrat"
               href="/podcast"
             >
               Podcast
-            </a>
+            </a> */}
             <a
               className="px-3 py-3 rounded-md text-m font-medium font-montserrat"
               href="/blog"

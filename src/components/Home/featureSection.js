@@ -2,14 +2,6 @@ import React from "react"
 import Fade from "react-reveal/Fade"
 import {Link} from "gatsby"
 
-// Assets
-import HeroImage from "../../images/holographic-background-1.webp"
-import Image1 from "../../images/3D-liquid-abstract-1.webp"
-import Image2 from "../../images/3D-liquid-abstract.webp"
-import Image3 from "../../images/3D-liquid-abstract-3.webp"
-import button from "../Atoms/button.js"
-import SubscribeForm from "../subscriptions/subscribeForm.js"
-
 const FeatureSection = () => {
   return (
     <div className="max-w-7xl mx-auto">
@@ -58,38 +50,6 @@ const FeatureSection = () => {
           </div>
         </div>
       </Fade>
-
-      {/* 
-      <div className="mt-10 px-8">
-        <h2 className=" text-4xl font-semibold text-gradient bg-gradient-to-r from-pink to-purple">
-          {" "}
-          Integrations
-        </h2>
-        <h3 className=" mt-5 font-bold text-6xl xxs:text-lg xs:text-xl sm:text-xl lg:text-6xl">
-          Discover, connect, and configure
-        </h3>
-        <p className=" opacity-70 font-normal mt-3 text-xs xxs:text-xs xs:text-xs sm:text-xs md:text-sm lg:text-lg">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
-        </p>
-        <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-          <div className="rounded-md">
-            <a
-              href="/contact/"
-              className="transition-all duration-500ms ease-in-out hover:ease-in-out w-full flex items-center justify-center px-8 py-3 text-base font-medium rounded-md text-center bg-purple text-white hover:text-purple border border-purple hover:bg-transparent md:text-lg md:px-10"
-            >
-              Send Enquiry
-            </a>
-          </div>
-        </div>
-      </div> */}
     </div>
   )
 }

@@ -1,6 +1,4 @@
 import React from "react"
-import Input from "../Atoms/input"
-import Button from "../Atoms/button"
 import Fade from "react-reveal/Fade"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { Link } from "gatsby"
@@ -17,7 +15,6 @@ const BlogsContainer = ({ data }) => {
       excerpt: item.node.excerpt.slice(0, 200)
     }
   })
-  // const image = getImage(post.node.frontmatter.featuredimage)
 
   return (
     <div className="max-w-7xl mx-auto mt-10 px-8 ">
@@ -71,15 +68,6 @@ const BlogsContainer = ({ data }) => {
         <h3 className="text-lg my-2 opacity-60  text-center">
           Support immigration news by migrants in Washington, D.C.
         </h3>
-        {/* <div className=" hover:text-white mt-10 flex flex-col items-center justify-center">
-          <Input placeholder="Enter your email"></Input>
-          <a
-            href="#"
-            className="mt-4 transition-all duration-500ms ease-in-out hover:ease-in-out inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center  hover:text-white rounded-lg border border-darkorange  hover:bg-darkorange"
-          >
-            Join The List
-          </a>
-        </div> */}
         <SubscribeButton></SubscribeButton>
       </div>
     </div>

@@ -5,7 +5,6 @@ import Fade from "react-reveal/Fade"
 
 const BlogHeader = ({ post }) => {
   const image = getImage(post.node.featuredImg)
-  // console.log(image);
   return (
     <div className="max-w-7xl xxs:mx-4 sm:mx-auto mt-10">
       <Fade duration={2200}>
@@ -23,9 +22,6 @@ const BlogHeader = ({ post }) => {
               <p className="text-sm mt-2">{post.node.friendly_date} {'\u2022'} {post.node.authors[0].name}</p>
               <p className="text-sm mt-2 font-thin">{post.node.excerpt.slice(0,200)}...</p>
             </Link>
-            {/* <p className="text-lg mt-4 text-white opacity-70 xxs:text-sm sm:text-lg">
-              {post.node.frontmatter.description}
-            </p> */}
           </div>
           <div
             data-gatsby-image-wrapper=""
@@ -50,8 +46,6 @@ const BlogHeader = ({ post }) => {
                       formats={["auto", "webp", "avif"]}
                       quality={100}
                       className="img"
-                      //   width={1000}
-                      //   height={1000}
                     />
                   </div>
                 </Link>
