@@ -11,8 +11,8 @@ const SubscribeButton = ({className}) => {
     const handleCloseSubscribeModal = () => setIsSubscribeModalOpen(false);
   
     return(
-        <div className="flex shrink-0">
-            <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange"
+        <div className="flex shrink-0 justify-center">
+            <Button onClick={handleOpenSubscribeModal} title="Subscribe" className="bg-darkorange m"
             >
             </Button>
 
