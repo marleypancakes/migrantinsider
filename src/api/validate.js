@@ -67,9 +67,9 @@ export default async function confirmToken(req, res){
 
         const isPaidMember = hasPaidSubscriptions(member)
         if (isPaidMember) {
-            console.log('Member has active paid subscriptions');
+            // console.log('Member has active paid subscriptions');
         } else {
-            console.log('Member has no paid subscriptions');
+            // console.log('Member has no paid subscriptions');
         }
 
         const token = jwt.sign(

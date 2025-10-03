@@ -43,15 +43,15 @@ const PremiumContent = ({ post }) => {
     }
 
 
-    console.log("[PremiumContent] IsLoggedIn?: ", isLoggedIn)
-    console.log("[PremiumContent] Post: ", post)
-    console.log("[PremiumContent] Post Visibility: ", post.visibility)
-    console.log("[PremiumContent] Post Tiers: ", post.tiers)
+    // console.log("[PremiumContent] IsLoggedIn?: ", isLoggedIn)
+    // console.log("[PremiumContent] Post: ", post)
+    // console.log("[PremiumContent] Post Visibility: ", post.visibility)
+    // console.log("[PremiumContent] Post Tiers: ", post.tiers)
 
 
     // Public Post - everyone can see
     if(post.visibility === "public") {
-        console.log("[PremiumContent] Displaying public post!")
+        // console.log("[PremiumContent] Displaying public post!")
         return (
                 <StyledDiv
                 className="post-content-body text-[#000000]"
@@ -62,7 +62,7 @@ const PremiumContent = ({ post }) => {
 
     // Not logged in
     if (!isLoggedIn) {
-        console.log("[PremiumContent] Private post, user not logged in")
+        // console.log("[PremiumContent] Private post, user not logged in")
 
         return (
             <div className="post-content">
@@ -89,7 +89,7 @@ const PremiumContent = ({ post }) => {
     }
 
     if(!isPaidUser) {
-        console.log("[PremiumContent] Premium post, user is free")
+        // console.log("[PremiumContent] Premium post, user is free")
         return (
             <div className="post-content">
                 <StyledDiv
@@ -119,7 +119,7 @@ const PremiumContent = ({ post }) => {
             </div>
         )
     }
-    console.log("[PremiumContent] Premium post, user is paid")
+    // console.log("[PremiumContent] Premium post, user is paid")
 
     // Paid User - show full content
     return (

@@ -28,10 +28,10 @@ export const onClientEntry = async () => {
 
     if(token) {
 
-        console.log("Token: ", token)
+        // console.log("Token: ", token)
         
     const data = JSON.stringify({ token })
-    console.log("Request body: ", data)
+    // console.log("Request body: ", data)
     
     await window.fetch(`../../api/validate`, {
         method: `POST`,
@@ -41,7 +41,7 @@ export const onClientEntry = async () => {
         body: data,
     })
     .then(response => response.json())
-    .then(response => console.log(response))
+    // .then(response => console.log(response))
 }
 }
 

@@ -13,8 +13,6 @@ const Navbar = () => {
 
   const [openMenu, setOpenMenu] = useState(false)
 
-  console.log("[Navbar] IsLoggedin? ", isLoggedIn)
-
   return (
     <nav className="bg-transparent border-b">
       <div className="max-w-7xl mx-auto px-3 py-5 rounded-md">

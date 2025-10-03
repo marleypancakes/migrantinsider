@@ -6,7 +6,6 @@ import Seo from "../components/seo"
 import { graphql } from "gatsby"
 
 const Blog = ({ data }) => {
-  console.log("data", data)
   let HeaderPost = data?.allGhostPost?.edges[0]
   let otherPosts = data?.allGhostPost?.edges.slice(1)
 

@@ -18,7 +18,6 @@ export function UserProvider({ children }) {
       
       if (response.ok) {
         const userData = await response.json();
-        console.log(userData)
         setUser(userData);
       } else {
         setUser(null);

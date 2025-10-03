@@ -76,7 +76,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     })
 
     tags.forEach((tag) => {
-      console.log("Tag From Gatsby-node : " + tag)
       var slug = tag.toLowerCase(); // Convert to lowercase
       slug = slug.replace(/\s+/g, "-"); // Replace spaces with hyphens
       var tagurl = `/tag/${slug}/`;
