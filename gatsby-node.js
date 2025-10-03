@@ -61,7 +61,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     // Template For blog-post
     posts.forEach(({node}) => {
 
-      node.url = `/${node.slug}/`;
+      node.url = `/${node.slug.slice(0,60)}/`;
 
       actions.createPage({
         // path: post.node.fields.slug.split('/').slice(2, -1).join('/') === '' ? '/' : `/${post.node.fields.slug.split('/').slice(2, -1).join('/')}`,
