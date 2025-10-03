@@ -19,12 +19,12 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="w-full justify-between flex items-center">
             <div className="w-1/4 min-w-72">
-            <a
+            <Link
               className=" flex-shrink-0"
-              href="/"
+              to="/"
               >
               <img src={TitleImage}></img>
-            </a>
+            </Link>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-4">

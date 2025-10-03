@@ -11,7 +11,7 @@ const BlogHeader = ({ post }) => {
         <div className="flex flex-row justify-space xxs:flex-col-reverse xs:flex-col-reverse sm:flex-row mb-5">
           <div className="border-b-2 border-dg max-h-80 w-11/12 xxs:ml-0 xxs:mr-0 sm:ml-5 sm:mr-5 xxs:mt-5 xxs:mb-5 flex flex-col justify-center bg-transparent p-8 rounded-xl lg:m-5 xxs:w-full xs:w-full sm:w-full lg:w-full">
             <Link
-              to={'../' + post.node.slug}
+              to={'/' + post.node.slug}
               style={{
                 textDecoration: "none",
               }}
@@ -30,7 +30,7 @@ const BlogHeader = ({ post }) => {
             <div className="overflow-hidden  rounded-xl xxs:w-full">
               {post.node.feature_image && (
                 <Link
-                  to={'../' + post.node.slug}
+                  to={'/' + post.node.slug}
                   style={{
                     textDecoration: "none",
                     color: "black",

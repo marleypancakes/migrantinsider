@@ -9,7 +9,7 @@ const FeatureSection = () => {
         <div className="mt-10 flex flex-row justify-space xxs:flex-col xs:flex-col sm:flex-row content-center justify-center align-middle text-center items-center">
           <div className="w-1/3 bg-[#CB5B3B] drop-shadow-lg hover:brightness-90 p-8 rounded-xl m-5 xxs:w-1/2 xs:w-1/2 sm:w-1/2">
             <Link
-              to={'../tag/whitehouse'}
+              to={'/tag/white-house'}
               style={{
                 textDecoration: "none",
               }}
@@ -20,7 +20,7 @@ const FeatureSection = () => {
 
           <div className="w-1/3 bg-[#CB5B3B] drop-shadow-lg hover:brightness-90 p-8 rounded-xl m-5 xxs:w-1/2 xs:w-1/2 sm:w-1/2">
             <Link
-              to={'../tag/congress'}
+              to={'/tag/congress'}
               style={{
                 textDecoration: "none",
               }}
@@ -30,7 +30,7 @@ const FeatureSection = () => {
           </div>
           <div className="w-1/3 bg-[#CB5B3B] drop-shadow-lg hover:brightness-90 p-8 rounded-xl m-5 xxs:w-1/2 xs:w-1/2 sm:w-1/2">
             <Link
-              to={'../tag/courts'}
+              to={'/tag/courts'}
               style={{
                 textDecoration: "none",
               }}
@@ -40,7 +40,7 @@ const FeatureSection = () => {
           </div>
           <div className="w-1/3 bg-[#CB5B3B] drop-shadow-lg hover:brightness-90 p-8 rounded-xl m-5 xxs:w-1/2 xs:w-1/2 sm:w-1/2">
             <Link
-              to={'../tag/ice'}
+              to={'/tag/ice'}
               style={{
                 textDecoration: "none",
               }}
