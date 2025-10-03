@@ -20,31 +20,6 @@ const Modal = require("react-modal");
 
 Modal.setAppElement("#___gatsby");
 
-export const onClientEntry = async () => {
-
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const token = urlParams.get("token");
-
-    if(token) {
-
-        console.log("Token: ", token)
-        
-    const data = JSON.stringify({ token })
-    console.log("Request body: ", data)
-    
-    await window.fetch(`../../api/validate`, {
-        method: `POST`,
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: data,
-    })
-    .then(response => response.json())
-    .then(response => console.log(response))
-}
-}
-
 export const wrapRootElement = ({ element }) => {
     return <UserProvider>{element}</UserProvider>
 }
