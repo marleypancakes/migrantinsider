@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkHolo_Gatsby_Theme=self.webpackChunkHolo_Gatsby_Theme||[]).push([[69],{1583:function(e,t,a){a.r(t);var l=a(6540),i=a(1533),s=a(2269);t.default=()=>l.createElement(i.A,null,l.createElement(s.A,{title:"Migrant Insider - Podcast",description:"Holo is a visually striking and highly customizable open source theme built on the powerful Gatsby framework and integrated with the versatile Decap CMS"}))}}]);
+//# sourceMappingURL=component---src-pages-podcast-js-f36e38ff01a031d83f16.js.map

@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkHolo_Gatsby_Theme=self.webpackChunkHolo_Gatsby_Theme||[]).push([[518],{8192:function(e,t,l){l.r(t);var c=l(6540),n=l(1533),a=l(2269),u=l(7617);t.default=()=>c.createElement(n.A,null,c.createElement(a.A,{title:"Account",description:"View Account Details"}),c.createElement(u.A,null))}}]);
+//# sourceMappingURL=component---src-pages-account-js-2b2d811bcc78c691eb39.js.map

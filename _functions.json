@@ -1,0 +1,56 @@
+[
+    {
+        "functionRoute": "auth-middleware",
+        "pluginName": "default-site-plugin",
+        "originalAbsoluteFilePath": "C:/Users/Marley/development/migrantinsider/src/api/auth-middleware.js",
+        "originalRelativeFilePath": "auth-middleware.js",
+        "relativeCompiledFilePath": "auth-middleware.js",
+        "absoluteCompiledFilePath": "C:\\Users\\Marley\\development\\migrantinsider\\.cache\\functions\\auth-middleware.js",
+        "functionId": "auth-middleware-js"
+    },
+    {
+        "functionRoute": "logout",
+        "pluginName": "default-site-plugin",
+        "originalAbsoluteFilePath": "C:/Users/Marley/development/migrantinsider/src/api/logout.js",
+        "originalRelativeFilePath": "logout.js",
+        "relativeCompiledFilePath": "logout.js",
+        "absoluteCompiledFilePath": "C:\\Users\\Marley\\development\\migrantinsider\\.cache\\functions\\logout.js",
+        "functionId": "logout-js"
+    },
+    {
+        "functionRoute": "me",
+        "pluginName": "default-site-plugin",
+        "originalAbsoluteFilePath": "C:/Users/Marley/development/migrantinsider/src/api/me.js",
+        "originalRelativeFilePath": "me.js",
+        "relativeCompiledFilePath": "me.js",
+        "absoluteCompiledFilePath": "C:\\Users\\Marley\\development\\migrantinsider\\.cache\\functions\\me.js",
+        "functionId": "me-js"
+    },
+    {
+        "functionRoute": "signin",
+        "pluginName": "default-site-plugin",
+        "originalAbsoluteFilePath": "C:/Users/Marley/development/migrantinsider/src/api/signin.js",
+        "originalRelativeFilePath": "signin.js",
+        "relativeCompiledFilePath": "signin.js",
+        "absoluteCompiledFilePath": "C:\\Users\\Marley\\development\\migrantinsider\\.cache\\functions\\signin.js",
+        "functionId": "signin-js"
+    },
+    {
+        "functionRoute": "subscribe",
+        "pluginName": "default-site-plugin",
+        "originalAbsoluteFilePath": "C:/Users/Marley/development/migrantinsider/src/api/subscribe.js",
+        "originalRelativeFilePath": "subscribe.js",
+        "relativeCompiledFilePath": "subscribe.js",
+        "absoluteCompiledFilePath": "C:\\Users\\Marley\\development\\migrantinsider\\.cache\\functions\\subscribe.js",
+        "functionId": "subscribe-js"
+    },
+    {
+        "functionRoute": "validate",
+        "pluginName": "default-site-plugin",
+        "originalAbsoluteFilePath": "C:/Users/Marley/development/migrantinsider/src/api/validate.js",
+        "originalRelativeFilePath": "validate.js",
+        "relativeCompiledFilePath": "validate.js",
+        "absoluteCompiledFilePath": "C:\\Users\\Marley\\development\\migrantinsider\\.cache\\functions\\validate.js",
+        "functionId": "validate-js"
+    }
+]
