@@ -36,12 +36,18 @@ try{
         console.log("[Sign In] Response status:", response.status);
         return{
             statusCode: response.status,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ success: response.ok })
         };
     } catch (err) {
         console.error("[Sign In] Error:", err.message);
         return {
             statusCode: 500,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ error: err.message })
         };
     }
