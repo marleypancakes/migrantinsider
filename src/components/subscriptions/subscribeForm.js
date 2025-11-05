@@ -75,13 +75,13 @@ const SubscribeForm = () => {
                 body: JSON.stringify(values, null, 2),
               })
               .then((response) => {
-                console.log("[On Submit] Full response, inside", response);
-                console.log("Inside Promise: ", response.status);
+                // console.log("[On Submit] Full response, inside", response);
+                // console.log("Inside Promise: ", response.status);
                 return response.status;
               })
               setSubmitting(false);
               setServerResponse(response);
-              console.log(serverResponse);
+              // console.log(serverResponse);
               if(response === 200) {
                 document.getElementById("subscribesuccess").style.display = "grid";
                 document.getElementById("subscribebody").style.display = "none";

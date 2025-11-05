@@ -24,7 +24,7 @@ const BlogsContainer = ({ data }) => {
             <div key={i}>
               <div className="overflow-hidden  rounded-xl xxs:w-full ">
                 <Link
-                  to={'../' + blog.slug}
+                  to={'/' + blog.slug}
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -44,7 +44,7 @@ const BlogsContainer = ({ data }) => {
               </div>
               <div className="m-6 hover:brightness-150">
                 <Link
-                  to={'../' + blog.slug}
+                  to={'/' + blog.slug}
                   style={{
                     textDecoration: "none",
                     color: "black",

@@ -76,7 +76,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     })
 
     tags.forEach((tag) => {
-      console.log("Tag From Gatsby-node: " + tag)
       var slug = tag.toLowerCase(); // Convert to lowercase
       slug = slug.replace(/\s+/g, "-"); // Replace spaces with hyphens
       var tagurl = `/tag/${slug}/`;
@@ -118,7 +117,7 @@ exports.onCreateNode = async ({ node, actions: {createNode, createNodeField}, ge
 
       if(fileNode) {
         createNodeField({ node, name: "localFile", value: fileNode.id })
-        // console.log("Featured image node created at "+ node.feature_image);
+        console.log("Featured image node created at "+ node.feature_image);
       }
     }
 }

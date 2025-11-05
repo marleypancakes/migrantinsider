@@ -3,6 +3,7 @@ require("dotenv").config({
 })
 
 module.exports = {
+  pathPrefix: "/migrantinsider",
   siteMetadata: {
     title: `Migrant Insider`,
     description: `Migrant Insider is the first and only immigration news outlet in the Beltway.`,

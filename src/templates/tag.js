@@ -9,9 +9,6 @@ const Tag  = ({data, pageContext}) => {
     let posts = data?.allGhostPost?.edges
     const {tag, slug} = pageContext;
 
-
-    console.log("Posts from tag page: " + posts)
-
     return (
       <Layout>
         <Seo

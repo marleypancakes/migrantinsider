@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Link } from "gatsby"
 import Button from "./Atoms/button"
 import TitleImage from "../../static/img/migrantinsidertitle.png"
-import { useUser } from "../context/UserContext"
+import { useUser, UserContext } from "../context/UserContext"
 import logout  from "../utils/logout"
 import SubscribeButton from "./subscriptions/subscribeButton"
 import SignInButton from "./subscriptions/signInButton"
@@ -13,20 +13,18 @@ const Navbar = () => {
 
   const [openMenu, setOpenMenu] = useState(false)
 
-  console.log("[Navbar] IsLoggedin? ", isLoggedIn)
-
   return (
     <nav className="bg-transparent border-b">
       <div className="max-w-7xl mx-auto px-3 py-5 rounded-md">
         <div className="flex items-center justify-between h-16">
           <div className="w-full justify-between flex items-center">
             <div className="w-1/4 min-w-72">
-            <a
+            <Link
               className=" flex-shrink-0"
-              href="/"
+              to="/"
               >
               <img src={TitleImage}></img>
-            </a>
+            </Link>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-4">
