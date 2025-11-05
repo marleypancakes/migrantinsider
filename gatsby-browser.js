@@ -39,10 +39,17 @@ export const onClientEntry = async () => {
             'content-type': 'application/json',
         },
         body: data,
-    })
-    .then(response => response.json())
-    // .then(response => console.log(response))
-}
+        })
+        .then(response => response.json())
+        // .then(response => console.log(response))
+    }   
+    if (typeof window !== 'undefined' && !document.querySelector('[data-ghost]')) {
+        const script = document.createElement('script');
+        script.src = 'https://notes-on-the-crises.ghost.io/public/members.min.js';
+        script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
+        script.async = true;
+        document.head.appendChild(script);
+    }
 }
 
 export const wrapRootElement = ({ element }) => {

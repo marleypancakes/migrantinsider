@@ -23,3 +23,14 @@ Modal.setAppElement("#___gatsby");
 export const wrapRootElement = ({ element }) => {
     return <UserProvider>{element}</UserProvider>
 }
+
+export const onRenderBody = ({ setHeadComponents }) => {
+  setHeadComponents([
+    <script
+      key="ghost-members"
+      src="https://notes-on-the-crises.ghost.io/public/members.min.js"
+      data-ghost="https://notes-on-the-crises.ghost.io"
+      async
+    />
+  ])
+}

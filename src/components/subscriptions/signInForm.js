@@ -2,6 +2,33 @@ import React from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
+async function sendMagicLink(email) {
+  try {
+    // Wait for Ghost script to load
+    if (typeof window === 'undefined' || !window.ghost) {
+      throw new Error('Ghost members script not loaded');
+    }
+    
+    await window.ghost.auth.sendMagicLink({ 
+      email, 
+      emailType: 'signin' 
+    });
+    
+    console.log("[Sign In] Magic link sent successfully");
+    return { statusCode: 201 };
+    
+  } catch (err) {
+    console.error("[Sign In] Error:", err.message);
+    
+    // Ghost returns specific error for non-existent members
+    if (err.message.includes('member') || err.message.includes('not found')) {
+      return { statusCode: 400 };
+    }
+    
+    return { statusCode: 500 };
+  }
+}
+
 const SignInForm = () => {
     const [serverResponse, setServerResponse] = React.useState(``)
     return (
@@ -18,38 +45,59 @@ const SignInForm = () => {
           }
           return errors;
         }}
-        onSubmit={(values, { setFieldError, setSubmitting }) => {          
-          setTimeout(async () => {
-            const response = await window
-                .fetch(`/api/signin`, {
-                    method: `POST`,
-                    headers: {
-                      "content-type": "application/json",
-                    },
-                    body: JSON.stringify(values, null, 2),
-                }).then((response) => {
-                  // console.log("[On Submit] Full response, inside", response);
-                  // console.log("Inside Promise: ", response.status);
+        // onSubmit={(values, { setFieldError, setSubmitting }) => {          
+        //   setTimeout(async () => {
+        //     const response = await window
+        //         .fetch(`/api/signin`, {
+        //             method: `POST`,
+        //             headers: {
+        //               "content-type": "application/json",
+        //             },
+        //             body: JSON.stringify(values, null, 2),
+        //         }).then((response) => {
+        //           // console.log("[On Submit] Full response, inside", response);
+        //           // console.log("Inside Promise: ", response.status);
                   
-                  return response.status;
-                })
+        //           return response.status;
+        //         })
+        //       setSubmitting(false);
+        //     // console.log("[On Submit] Response: ", response);
+        //     setServerResponse(response);
+        //     // console.log("[On Submit] Server Response", serverResponse);
+        //     // console.log("[On Submit] Outside Promise:", response);
+        //     if(response === 201) {
+        //       document.getElementById("signinsuccess").style.display = "grid";
+        //       document.getElementById("signinbody").style.display = "none";
+        //     }
+        //     else if (response === 400){
+        //       setFieldError("email", "No member exists with this email address.")
+        //     }
+        //     else {
+        //       console.error("Invalid Response: ", response)
+        //     }
+        //   }, 400);
+        // }}
+        onSubmit={(values, { setFieldError, setSubmitting }) => {          
+            setTimeout(async () => {
+              const response = await sendMagicLink(values.email);
+              console.log("[Sign In Form] Status:", response.statusCode);
+              
               setSubmitting(false);
-            // console.log("[On Submit] Response: ", response);
-            setServerResponse(response);
-            // console.log("[On Submit] Server Response", serverResponse);
-            // console.log("[On Submit] Outside Promise:", response);
-            if(response === 201) {
-              document.getElementById("signinsuccess").style.display = "grid";
-              document.getElementById("signinbody").style.display = "none";
-            }
-            else if (response === 400){
-              setFieldError("email", "No member exists with this email address.")
-            }
-            else {
-              console.error("Invalid Response: ", response)
-            }
-          }, 400);
-        }}
+              setServerResponse(response.statusCode);
+              
+              if(response.statusCode === 201) {
+                document.getElementById("signinsuccess").style.display = "grid";
+                document.getElementById("signinbody").style.display = "none";
+              }
+              else if (response.statusCode === 400){
+                setFieldError("email", "No member exists with this email address.")
+              }
+              else {
+                console.error("Invalid Response: ", response.statusCode)
+                setFieldError("email", "An error occurred. Please try again.")
+              }
+            }, 400);
+          }}
       >
         {({ isSubmitting }) => (
             <Form className="grid grid-cols-1 p-1">
