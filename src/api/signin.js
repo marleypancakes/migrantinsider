@@ -3,7 +3,7 @@ export default async function signInHandler(req, res) {
     // Using the local server will fail, because it won't do email
     // On production, will give 201 only for subscribers
     
-
+try{
     let integrityToken = await fetch(process.env.GHOST_ADMIN_API_URL+'/members/api/integrity-token',
         {   headers: {
                 'app-pragma': 'no-cache',
@@ -32,8 +32,17 @@ export default async function signInHandler(req, res) {
                 integrityToken: integrityToken
                 }
             )
-        }).then((response) => {
-            console.log(response.status)
-            res.sendStatus(response.status)})
-        .catch((err) => console.error(err.message))
+        });
+        console.log("[Sign In] Response status:", response.status);
+        return{
+            statusCode: response.status,
+            body: JSON.stringify({ success: response.ok })
+        };
+    } catch (err) {
+        console.error("[Sign In] Error:", err.message);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: err.message })
+        };
+    }
 }
