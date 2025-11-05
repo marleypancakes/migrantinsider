@@ -4,15 +4,30 @@ import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
 async function sendMagicLink(email) {
   try {
-    // Wait for Ghost script to load
-    if (typeof window === 'undefined' || !window.ghost) {
-      throw new Error('Ghost members script not loaded');
-    }
+    // Wait for Ghost Portal to load
+    const waitForGhostPortal = () => {
+      return new Promise((resolve, reject) => {
+        let attempts = 0;
+        const maxAttempts = 50; // 5 seconds max wait
+        
+        const checkPortal = setInterval(() => {
+          attempts++;
+          
+          if (typeof window !== 'undefined' && window.GhostPortal) {
+            clearInterval(checkPortal);
+            resolve();
+          } else if (attempts >= maxAttempts) {
+            clearInterval(checkPortal);
+            reject(new Error('Ghost Portal script failed to load'));
+          }
+        }, 100);
+      });
+    };
     
-    await window.ghost.auth.sendMagicLink({ 
-      email, 
-      emailType: 'signin' 
-    });
+    await waitForGhostPortal();
+    
+    // Trigger the signin flow
+    await window.GhostPortal.sendMagicLink({ email });
     
     console.log("[Sign In] Magic link sent successfully");
     return { statusCode: 201 };
@@ -20,8 +35,7 @@ async function sendMagicLink(email) {
   } catch (err) {
     console.error("[Sign In] Error:", err.message);
     
-    // Ghost returns specific error for non-existent members
-    if (err.message.includes('member') || err.message.includes('not found')) {
+    if (err.message && err.message.includes('member')) {
       return { statusCode: 400 };
     }
     

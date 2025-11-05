@@ -43,13 +43,15 @@ export const onClientEntry = async () => {
         .then(response => response.json())
         // .then(response => console.log(response))
     }   
-    if (typeof window !== 'undefined' && !document.querySelector('[data-ghost]')) {
-        const script = document.createElement('script');
-        script.src = 'https://www.crisesnotes.com/members/api/member/';
-        script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
-        script.async = true;
-        document.head.appendChild(script);
-    }
+  if (typeof window !== 'undefined' && !document.querySelector('[data-ghost]')) {
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
+    script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
+    script.setAttribute('data-api', 'https://notes-on-the-crises.ghost.io/ghost/api/content/');
+    script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY_HERE');
+    script.async = true;
+    document.head.appendChild(script);
+  }
 }
 
 export const wrapRootElement = ({ element }) => {

@@ -27,9 +27,11 @@ export const wrapRootElement = ({ element }) => {
 export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
     <script
-      key="ghost-members"
-      src="https://www.crisesnotes.com/members/api/member/"
+      key="ghost-portal"
+      src="https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js"
       data-ghost="https://notes-on-the-crises.ghost.io"
+      data-api="https://notes-on-the-crises.ghost.io/ghost/api/content/"
+      data-key="YOUR_CONTENT_API_KEY_HERE"
       async
     />
   ])
