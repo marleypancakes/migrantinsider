@@ -107,7 +107,7 @@ module.exports = {
       // },
       resolve: `gatsby-source-ghost`,
       options: {
-				apiUrl: 'https://notes-on-the-crises.ghost.io',
+				apiUrl: process.env.GHOST_ADMIN_API_URL,
 				contentApiKey: '66d1511ea9fd2fad26cd1abaad',
       },
     },
