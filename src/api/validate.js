@@ -2,9 +2,8 @@ import { JwksClient } from "jwks-rsa";
 import * as jwt from "jsonwebtoken"
 import GhostAdminAPI from '@tryghost/admin-api'
 
-// CHANGE THIS URI IN PRODUCTION
 const client = new JwksClient({
-    jwksUri: "http://127.0.0.1:2368/members/.well-known/jwks.json",
+    jwksUri: `${process.env.GHOST_ADMIN_API_URL}/members/.well-known/jwks.json`,
 });
 
 const admin = new GhostAdminAPI({
@@ -41,7 +40,7 @@ export default async function confirmToken(req, res){
         // Decode JWT
         const decoded =jwt.decode(signinToken, { complete: true });
         
-        //Get Signing Key from [GHOST FRONTEND URL]/members/.well-known/jwks.json
+        //Get Signing Key from [GHOST ADMIN URL]/members/.well-known/jwks.json
         const key = await client.getSigningKey(decoded.header.kid)
         const signingKey = key.getPublicKey();
 

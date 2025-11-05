@@ -21,7 +21,7 @@ const SignInForm = () => {
         onSubmit={(values, { setFieldError, setSubmitting }) => {          
           setTimeout(async () => {
             const response = await window
-                .fetch(`../../api/signin`, {
+                .fetch(`/api/signin`, {
                     method: `POST`,
                     headers: {
                       "content-type": "application/json",

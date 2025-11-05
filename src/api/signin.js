@@ -14,9 +14,9 @@ export default async function signInHandler(req, res) {
     integrityToken = await integrityToken.text()
     // console.log("[Sign In] Integrity Token: ", integrityToken)
     const url = process.env.GHOST_ADMIN_API_URL+'/members/api/send-magic-link'
-    // console.log("[Sign In] URL: ", url)
+    console.log("[Sign In] URL: ", url)
     const email = req.body.email;
-    // console.log("[Sign In] Email: ", email)
+    console.log("[Sign In] Email: ", email)
 
     // Send request to server
     let response;
@@ -33,7 +33,7 @@ export default async function signInHandler(req, res) {
                 }
             )
         }).then((response) => {
-            // console.log(response.status)
+            console.log(response.status)
             res.sendStatus(response.status)})
         .catch((err) => console.error(err.message))
 }
