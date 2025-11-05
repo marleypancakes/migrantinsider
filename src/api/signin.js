@@ -12,7 +12,7 @@ try{
             method: 'GET'}
         )
     integrityToken = await integrityToken.text()
-    // console.log("[Sign In] Integrity Token: ", integrityToken)
+    console.log("[Sign In] Integrity Token: ", integrityToken)
     const url = process.env.GHOST_ADMIN_API_URL+'/members/api/send-magic-link'
     console.log("[Sign In] URL: ", url)
     const email = req.body.email;
