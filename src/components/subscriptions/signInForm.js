@@ -2,11 +2,54 @@ import React from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
+async function sendMagicLink(email) {
+  try{
+    let integrityToken = await fetch(process.env.GHOST_ADMIN_API_URL+'/members/api/integrity-token',
+        {   headers: {
+                'app-pragma': 'no-cache',
+                'x-ghost-version': '5.98'
+                },
+            method: 'GET'}
+        )
+    integrityToken = await integrityToken.text()
+    console.log("[Sign In] Integrity Token: ", integrityToken)
+    const url = process.env.GHOST_ADMIN_API_URL+'/members/api/send-magic-link'
+    console.log("[Sign In] URL: ", url)
+    console.log("[Sign In] Email: ", email)
+
+    // Send request to server
+    let response;
+    response = await fetch (url,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {email: email,
+                emailType: 'signin',
+                integrityToken: integrityToken
+                }
+            )
+        });
+        console.log("[Sign In] Response status:", response.status);
+        return{
+            statusCode: response.status,
+            body: JSON.stringify({ success: response.ok })
+        };
+    } catch (err) {
+        console.error("[Sign In] Error:", err.message);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: err.message })
+        };
+    }
+}
 const SignInForm = () => {
     const [serverResponse, setServerResponse] = React.useState(``)
     return (
         <Formik
-        initialValues={{name: '',  email: ''}}
+        initialValues={{email: ''}}
         validate={values => {
           const errors = {};
           if (!values.email) {
@@ -20,19 +63,22 @@ const SignInForm = () => {
         }}
         onSubmit={(values, { setFieldError, setSubmitting }) => {          
           setTimeout(async () => {
-            const response = await window
-                .fetch(`/api/signin`, {
-                    method: `POST`,
-                    headers: {
-                      "content-type": "application/json",
-                    },
-                    body: JSON.stringify(values, null, 2),
-                }).then((response) => {
-                  // console.log("[On Submit] Full response, inside", response);
-                  // console.log("Inside Promise: ", response.status);
-                  
-                  return response.status;
-                })
+            const response = await sendMagicLink(values.email);
+            console.log("[Sign In Form] Status:" + response.statusCode);
+            console.log("[Sign In Form] Body:" + response.body);
+            // const response = await window
+            //     .fetch(`/api/signin`, {
+            //         method: `POST`,
+            //         headers: {
+            //           "content-type": "application/json",
+            //         },
+            //         body: JSON.stringify(values, null, 2),
+            //     }).then((response) => {
+            //       // console.log("[On Submit] Full response, inside", response);
+            //       // console.log("Inside Promise: ", response.status);
+
+            //       return response.status;
+            //     })
               setSubmitting(false);
             // console.log("[On Submit] Response: ", response);
             setServerResponse(response);
