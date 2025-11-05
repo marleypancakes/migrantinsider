@@ -28,7 +28,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
     <script
       key="ghost-members"
-      src="https://notes-on-the-crises.ghost.io/public/members.min.js"
+      src="https://www.crisesnotes.com/members/api/member/"
       data-ghost="https://notes-on-the-crises.ghost.io"
       async
     />

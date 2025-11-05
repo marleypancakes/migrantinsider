@@ -45,7 +45,7 @@ export const onClientEntry = async () => {
     }   
     if (typeof window !== 'undefined' && !document.querySelector('[data-ghost]')) {
         const script = document.createElement('script');
-        script.src = 'https://notes-on-the-crises.ghost.io/public/members.min.js';
+        script.src = 'https://www.crisesnotes.com/members/api/member/';
         script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
         script.async = true;
         document.head.appendChild(script);
