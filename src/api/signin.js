@@ -15,8 +15,7 @@ try{
     // console.log("[Sign In] Integrity Token: ", integrityToken)
     const url = process.env.GHOST_ADMIN_API_URL+'/members/api/send-magic-link'
     console.log("[Sign In] URL: ", url)
-    const body = JSON.parse(req.body);
-    const email = body.email;
+    const email = req.body.email;
     console.log("[Sign In] Email: ", email)
 
     // Send request to server
