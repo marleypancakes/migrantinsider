@@ -4,25 +4,29 @@ import TitleImage from "../../../static/img/migrantinsidertitle.png"
 const SignInForm = () => {
     const [scriptLoaded, setScriptLoaded] = React.useState(false)
 
-    React.useEffect(() => {
-      if (document.querySelector('script[data-ghost]')) {
-        setScriptLoaded(true);
-        return;
-      }
+React.useEffect(() => {
+  if (document.querySelector('script[data-ghost]')) {
+    setScriptLoaded(true);
+    return;
+  }
 
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
-      script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
-      script.setAttribute('data-api', 'https://notes-on-the-crises.ghost.io/ghost/api/content/');
-      script.setAttribute('data-key', '66d1511ea9fd2fad26cd1abaad');
-      script.async = true;
-      
-      script.onload = () => {
-        setScriptLoaded(true);
-      };
-      
-      document.head.appendChild(script);
-    }, []);
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
+  script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
+  script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY_HERE'); // Just the key, no URL
+  script.async = true;
+  
+  script.onload = () => {
+    console.log("[Portal] Script loaded");
+    setScriptLoaded(true);
+  };
+  
+  script.onerror = (error) => {
+    console.error("[Portal] Script error:", error);
+  };
+  
+  document.head.appendChild(script);
+}, []);
 
     const handleSignIn = () => {
       // Trigger Ghost Portal's signin modal
