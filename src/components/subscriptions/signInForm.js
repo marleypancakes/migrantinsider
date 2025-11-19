@@ -2,61 +2,81 @@ import React from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
-async function sendMagicLink(email) {
-  try {
-    console.log("[Sign In] Checking for Ghost objects...");
-    console.log("[Sign In] window.GhostPortal:", typeof window.GhostPortal);
-    console.log("[Sign In] window.ghost:", typeof window.ghost);
-    console.log("[Sign In] All window properties:", Object.keys(window).filter(key => key.toLowerCase().includes('ghost')));
-    
-    // Wait for any Ghost-related object to load
-    const waitForGhost = () => {
-      return new Promise((resolve, reject) => {
-        let attempts = 0;
-        const maxAttempts = 50;
-        
-        const checkGhost = setInterval(() => {
-          attempts++;
-          
-          // Check for various possible Ghost objects
-          if (typeof window !== 'undefined' && 
-              (window.GhostPortal || window.ghost || window.portal)) {
-            clearInterval(checkGhost);
-            console.log("[Sign In] Ghost object found!");
-            resolve();
-          } else if (attempts >= maxAttempts) {
-            clearInterval(checkGhost);
-            reject(new Error('Ghost Portal script failed to load'));
-          }
-        }, 100);
-      });
-    };
-    
-    await waitForGhost();
-    
-    // Try different API methods
-    if (window.GhostPortal && window.GhostPortal.sendMagicLink) {
-      await window.GhostPortal.sendMagicLink({ email });
-    } else if (window.ghost && window.ghost.sendMagicLink) {
-      await window.ghost.sendMagicLink({ email });
-    } else {
-      throw new Error('No sendMagicLink method found');
-    }
-    
-    console.log("[Sign In] Magic link sent successfully");
-    return { statusCode: 201 };
-    
-  } catch (err) {
-    console.error("[Sign In] Error:", err.message);
-    return { statusCode: 500 };
-  }
-}
-
 const SignInForm = () => {
     const [serverResponse, setServerResponse] = React.useState(``)
+    const [ghostLoaded, setGhostLoaded] = React.useState(false)
+    const [scriptError, setScriptError] = React.useState(null)
+
+    React.useEffect(() => {
+      // Check if script already exists
+      if (document.querySelector('script[data-ghost]')) {
+        console.log("[Sign In] Script already exists");
+        return;
+      }
+
+      console.log("[Sign In] Loading Ghost Portal script...");
+      
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
+      script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
+      script.setAttribute('data-api', 'https://notes-on-the-crises.ghost.io/ghost/api/content/');
+      script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY_HERE'); // Replace with your key
+      script.async = true;
+      
+      script.onload = () => {
+        console.log("[Sign In] Script loaded successfully");
+        // Wait a bit for initialization
+        setTimeout(() => {
+          console.log("[Sign In] Checking window object:", Object.keys(window).filter(k => k.toLowerCase().includes('ghost')));
+          setGhostLoaded(true);
+        }, 500);
+      };
+      
+      script.onerror = (error) => {
+        console.error("[Sign In] Script failed to load:", error);
+        setScriptError("Failed to load authentication system");
+      };
+      
+      document.head.appendChild(script);
+      
+      return () => {
+        // Cleanup if needed
+      };
+    }, []);
+
+    async function sendMagicLink(email) {
+      try {
+        console.log("[Sign In] Attempting to send magic link...");
+        console.log("[Sign In] Available Ghost objects:", {
+          GhostPortal: typeof window.GhostPortal,
+          ghost: typeof window.ghost,
+          allKeys: Object.keys(window).filter(k => k.toLowerCase().includes('ghost'))
+        });
+        
+        // Manual fetch as fallback
+        const response = await fetch('https://notes-on-the-crises.ghost.io/members/api/send-magic-link', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            emailType: 'signin'
+          })
+        });
+        
+        console.log("[Sign In] Direct API response:", response.status);
+        return { statusCode: response.status };
+        
+      } catch (err) {
+        console.error("[Sign In] Error:", err);
+        return { statusCode: 500 };
+      }
+    }
+
     return (
         <Formik
-        initialValues={{name: '',  email: ''}}
+        initialValues={{email: ''}}
         validate={values => {
           const errors = {};
           if (!values.email) {
@@ -68,59 +88,27 @@ const SignInForm = () => {
           }
           return errors;
         }}
-        // onSubmit={(values, { setFieldError, setSubmitting }) => {          
-        //   setTimeout(async () => {
-        //     const response = await window
-        //         .fetch(`/api/signin`, {
-        //             method: `POST`,
-        //             headers: {
-        //               "content-type": "application/json",
-        //             },
-        //             body: JSON.stringify(values, null, 2),
-        //         }).then((response) => {
-        //           // console.log("[On Submit] Full response, inside", response);
-        //           // console.log("Inside Promise: ", response.status);
-                  
-        //           return response.status;
-        //         })
-        //       setSubmitting(false);
-        //     // console.log("[On Submit] Response: ", response);
-        //     setServerResponse(response);
-        //     // console.log("[On Submit] Server Response", serverResponse);
-        //     // console.log("[On Submit] Outside Promise:", response);
-        //     if(response === 201) {
-        //       document.getElementById("signinsuccess").style.display = "grid";
-        //       document.getElementById("signinbody").style.display = "none";
-        //     }
-        //     else if (response === 400){
-        //       setFieldError("email", "No member exists with this email address.")
-        //     }
-        //     else {
-        //       console.error("Invalid Response: ", response)
-        //     }
-        //   }, 400);
-        // }}
         onSubmit={(values, { setFieldError, setSubmitting }) => {          
-            setTimeout(async () => {
-              const response = await sendMagicLink(values.email);
-              console.log("[Sign In Form] Status:", response.statusCode);
-              
-              setSubmitting(false);
-              setServerResponse(response.statusCode);
-              
-              if(response.statusCode === 201) {
-                document.getElementById("signinsuccess").style.display = "grid";
-                document.getElementById("signinbody").style.display = "none";
-              }
-              else if (response.statusCode === 400){
-                setFieldError("email", "No member exists with this email address.")
-              }
-              else {
-                console.error("Invalid Response: ", response.statusCode)
-                setFieldError("email", "An error occurred. Please try again.")
-              }
-            }, 400);
-          }}
+          setTimeout(async () => {
+            const response = await sendMagicLink(values.email);
+            console.log("[Sign In Form] Status:", response.statusCode);
+            
+            setSubmitting(false);
+            setServerResponse(response.statusCode);
+            
+            if(response.statusCode === 201) {
+              document.getElementById("signinsuccess").style.display = "grid";
+              document.getElementById("signinbody").style.display = "none";
+            }
+            else if (response.statusCode === 400){
+              setFieldError("email", "No member exists with this email address.")
+            }
+            else {
+              console.error("Invalid Response:", response.statusCode)
+              setFieldError("email", "An error occurred. Please try again.")
+            }
+          }, 400);
+        }}
       >
         {({ isSubmitting }) => (
             <Form className="grid grid-cols-1 p-1">
@@ -128,6 +116,7 @@ const SignInForm = () => {
               <h1 className="w-100 h-auto text-center  text-3xl font-extrabold leading-tight text-[#000000] lg:mb-6 lg:text-4xl dark:">
                 Sign In
               </h1>
+              {scriptError && <div className="text-red-500 text-sm">{scriptError}</div>}
               <div id="signinbody" className="grid grid-cols-1 p-1">
               <div className="flex justify-between w-full">
                 <label htmlFor="email">Email</label>
