@@ -10,6 +10,7 @@ const api = new GhostAdminAPI({
 async function handler(req, res) {
 
   const { user } = req;
+  console.log("[Me.js] User: " + user)
     
   res.status(200).json({
     id: user.memberId,

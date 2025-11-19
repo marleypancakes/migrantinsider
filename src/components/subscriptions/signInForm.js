@@ -4,41 +4,50 @@ import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
 async function sendMagicLink(email) {
   try {
-    // Wait for Ghost Portal to load
-    const waitForGhostPortal = () => {
+    console.log("[Sign In] Checking for Ghost objects...");
+    console.log("[Sign In] window.GhostPortal:", typeof window.GhostPortal);
+    console.log("[Sign In] window.ghost:", typeof window.ghost);
+    console.log("[Sign In] All window properties:", Object.keys(window).filter(key => key.toLowerCase().includes('ghost')));
+    
+    // Wait for any Ghost-related object to load
+    const waitForGhost = () => {
       return new Promise((resolve, reject) => {
         let attempts = 0;
-        const maxAttempts = 50; // 5 seconds max wait
+        const maxAttempts = 50;
         
-        const checkPortal = setInterval(() => {
+        const checkGhost = setInterval(() => {
           attempts++;
           
-          if (typeof window !== 'undefined' && window.GhostPortal) {
-            clearInterval(checkPortal);
+          // Check for various possible Ghost objects
+          if (typeof window !== 'undefined' && 
+              (window.GhostPortal || window.ghost || window.portal)) {
+            clearInterval(checkGhost);
+            console.log("[Sign In] Ghost object found!");
             resolve();
           } else if (attempts >= maxAttempts) {
-            clearInterval(checkPortal);
+            clearInterval(checkGhost);
             reject(new Error('Ghost Portal script failed to load'));
           }
         }, 100);
       });
     };
     
-    await waitForGhostPortal();
+    await waitForGhost();
     
-    // Trigger the signin flow
-    await window.GhostPortal.sendMagicLink({ email });
+    // Try different API methods
+    if (window.GhostPortal && window.GhostPortal.sendMagicLink) {
+      await window.GhostPortal.sendMagicLink({ email });
+    } else if (window.ghost && window.ghost.sendMagicLink) {
+      await window.ghost.sendMagicLink({ email });
+    } else {
+      throw new Error('No sendMagicLink method found');
+    }
     
     console.log("[Sign In] Magic link sent successfully");
     return { statusCode: 201 };
     
   } catch (err) {
     console.error("[Sign In] Error:", err.message);
-    
-    if (err.message && err.message.includes('member')) {
-      return { statusCode: 400 };
-    }
-    
     return { statusCode: 500 };
   }
 }

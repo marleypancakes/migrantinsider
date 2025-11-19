@@ -9,11 +9,13 @@ export function extractUserFromCookie(req) {
       .find(c => c.trim().startsWith('auth_token='))
       ?.split('=')[1];
 
+    console.log("[Auth-Middleware] extractUserFromCookie token: " + token)
     if (!token) {
       return null;
     }
-
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("[Auth-Middleware] extractUserFromCookie decoded token: " + decoded)
     return {
       memberId: decoded.memberId,
       name: decoded.name,
@@ -30,6 +32,7 @@ export function extractUserFromCookie(req) {
 export function requireAuth(handler) {
   return async (req, res) => {
     const user = extractUserFromCookie(req);
+    console.log("[Auth-Middleware] requireAuth user: " + user)
     
     if (!user) {
       return res.status(401).json({ message: 'Authentication required' });
@@ -44,7 +47,7 @@ export function requireAuth(handler) {
 export function requirePaidSubscription(handler) {
   return async (req, res) => {
     const user = extractUserFromCookie(req);
-    
+     
     if (!user) {
       return res.status(401).json({ message: 'Authentication required' });
     }
