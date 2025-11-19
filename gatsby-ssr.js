@@ -23,16 +23,3 @@ Modal.setAppElement("#___gatsby");
 export const wrapRootElement = ({ element }) => {
     return <UserProvider>{element}</UserProvider>
 }
-
-export const onRenderBody = ({ setHeadComponents }) => {
-  setHeadComponents([
-    <script
-      key="ghost-portal"
-      src="https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js"
-      data-ghost="https://notes-on-the-crises.ghost.io"
-      data-api="https://notes-on-the-crises.ghost.io/ghost/api/content/"
-      data-key="66d1511ea9fd2fad26cd1abaad"
-      async
-    />
-  ])
-}
