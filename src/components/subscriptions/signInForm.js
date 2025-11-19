@@ -74,7 +74,7 @@ React.useEffect(() => {
         const response = await fetch('https://notes-on-the-crises.ghost.io/members/api/send-magic-link', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: JSON.stringify({
             email: email,
