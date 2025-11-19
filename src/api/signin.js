@@ -15,7 +15,10 @@ export default async function handler(event) {
         
         // Step 1: Get integrity token
         console.log("[Sign In] Fetching integrity token...");
-        const integrityResponse = await fetch(
+        let integrityToken = null;
+        
+        // Try first endpoint
+        let integrityResponse = await fetch(
             process.env.GHOST_ADMIN_API_URL + '/members/api/session',
             {
                 headers: {
@@ -26,11 +29,13 @@ export default async function handler(event) {
             }
         );
         
-        console.log("[Sign In] Integrity token response status:", integrityResponse.status);
+        console.log("[Sign In] Session endpoint status:", integrityResponse.status);
         
-        if (integrityResponse.status !== 200) {
+        if (integrityResponse.status === 200) {
+            integrityToken = await integrityResponse.text();
+        } else {
             // Try alternative endpoint
-            const altResponse = await fetch(
+            integrityResponse = await fetch(
                 process.env.GHOST_ADMIN_API_URL + '/members/api/integrity-token',
                 {
                     headers: {
@@ -41,21 +46,21 @@ export default async function handler(event) {
                 }
             );
             
-            console.log("[Sign In] Alternative integrity token status:", altResponse.status);
+            console.log("[Sign In] Integrity token endpoint status:", integrityResponse.status);
             
-            if (altResponse.status !== 200) {
-                const errorText = await altResponse.text();
-                console.error("[Sign In] Failed to get integrity token:", errorText);
-                return {
-                    statusCode: 500,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ error: 'Failed to initialize authentication' })
-                };
+            if (integrityResponse.status === 200) {
+                integrityToken = await integrityResponse.text();
             }
-            
-            var integrityToken = await altResponse.text();
-        } else {
-            var integrityToken = await integrityResponse.text();
+        }
+        
+        if (!integrityToken) {
+            const errorText = await integrityResponse.text();
+            console.error("[Sign In] Failed to get integrity token:", errorText);
+            return {
+                statusCode: 500,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ error: 'Failed to initialize authentication', details: errorText })
+            };
         }
         
         console.log("[Sign In] Got integrity token:", integrityToken.substring(0, 20) + '...');
@@ -67,8 +72,7 @@ export default async function handler(event) {
         const magicLinkResponse = await fetch(magicLinkUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Origin': process.env.GHOST_ADMIN_API_URL
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 email: email,
@@ -79,77 +83,44 @@ export default async function handler(event) {
         
         console.log("[Sign In] Magic link response status:", magicLinkResponse.status);
         
-        // Log response body for debugging
+        // Get response text for debugging
         const responseText = await magicLinkResponse.text();
         console.log("[Sign In] Response body:", responseText);
         
-        // Check for different success/error status codes
+        // Handle different status codes
         if (magicLinkResponse.status === 201) {
             return {
                 statusCode: 201,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ success: true })
             };
-        } else if (magicLinkResponse.status === 400) {
+        } 
+        
+        if (magicLinkResponse.status === 400) {
             return {
                 statusCode: 400,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ error: 'Member not found' })
             };
-        } else if (magicLinkResponse.status === 404) {
-            // Try alternative endpoints
-            const endpoints = [
-                '/members/api/magic-link',
-                '/ghost/api/members/send-magic-link'
-            ];
-            
-            for (const endpoint of endpoints) {
-                const altUrl = process.env.GHOST_ADMIN_API_URL + endpoint;
-                console.log("[Sign In] Trying alternative endpoint:", altUrl);
-                
-                const altResponse = await fetch(altUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': process.env.GHOST_ADMIN_API_URL
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        emailType: 'signin',
-                        integrityToken: integrityToken
-                    })
-                });
-                
-                console.log(`[Sign In] ${endpoint} status:`, altResponse.status);
-                
-                if (altResponse.status === 201) {
-                    return {
-                        statusCode: 201,
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ success: true })
-                    };
-                }
-            }
-            
-            return {
-                statusCode: 404,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ error: 'Authentication endpoint not found', details: responseText })
-            };
         }
         
+        // If we got a 404 or other error, return it
         return {
             statusCode: magicLinkResponse.status,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Unexpected response', details: responseText })
+            body: JSON.stringify({ 
+                error: 'Unexpected response', 
+                status: magicLinkResponse.status,
+                details: responseText 
+            })
         };
         
     } catch (err) {
-        console.error("[Sign In] Error:", err.message, err.stack);
+        console.error("[Sign In] Error:", err);
         return {
             statusCode: 500,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: err.message })
+            body: JSON.stringify({ error: err.message, stack: err.stack })
         };
     }
 }
