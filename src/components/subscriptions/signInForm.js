@@ -7,43 +7,60 @@ const SignInForm = () => {
     const [ghostLoaded, setGhostLoaded] = React.useState(false)
     const [scriptError, setScriptError] = React.useState(null)
 
-    React.useEffect(() => {
-      // Check if script already exists
-      if (document.querySelector('script[data-ghost]')) {
-        console.log("[Sign In] Script already exists");
-        return;
+React.useEffect(() => {
+  // Check if script already exists
+  if (document.querySelector('script[data-ghost]')) {
+    console.log("[Sign In] Script already exists");
+    return;
+  }
+
+  console.log("[Sign In] Loading Ghost Portal script...");
+  
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
+  script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
+  script.setAttribute('data-api', 'https://notes-on-the-crises.ghost.io/ghost/api/content/');
+  script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY_HERE'); // Replace with your key
+  script.async = true;
+  
+  script.onload = () => {
+    console.log("[Sign In] Script loaded successfully");
+    
+    // Check multiple times as Portal might initialize async
+    const checkPortal = setInterval(() => {
+      console.log("[Sign In] Checking for Portal...");
+      console.log("[Sign In] window.GhostPortal:", window.GhostPortal);
+      console.log("[Sign In] window.ghost:", window.ghost);
+      
+      // Log all properties and methods if Portal exists
+      if (window.GhostPortal) {
+        console.log("[Sign In] GhostPortal properties:", Object.keys(window.GhostPortal));
+        console.log("[Sign In] GhostPortal methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(window.GhostPortal)));
       }
-
-      console.log("[Sign In] Loading Ghost Portal script...");
       
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
-      script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
-      script.setAttribute('data-api', 'https://notes-on-the-crises.ghost.io/ghost/api/content/');
-      script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY_HERE'); // Replace with your key
-      script.async = true;
+      if (window.ghost) {
+        console.log("[Sign In] ghost properties:", Object.keys(window.ghost));
+      }
       
-      script.onload = () => {
-        console.log("[Sign In] Script loaded successfully");
-        // Wait a bit for initialization
-        setTimeout(() => {
-          console.log("[Sign In] Checking window object:", Object.keys(window).filter(k => k.toLowerCase().includes('ghost')));
-          setGhostLoaded(true);
-        }, 500);
-      };
+      // Check for iframe (Portal often works through iframes)
+      const portalIframe = document.querySelector('iframe[data-frame="portal"]');
+      console.log("[Sign In] Portal iframe found:", !!portalIframe);
       
-      script.onerror = (error) => {
-        console.error("[Sign In] Script failed to load:", error);
-        setScriptError("Failed to load authentication system");
-      };
-      
-      document.head.appendChild(script);
-      
-      return () => {
-        // Cleanup if needed
-      };
-    }, []);
-
+      setGhostLoaded(true);
+      clearInterval(checkPortal);
+    }, 1000);
+    
+    // Stop checking after 5 seconds
+    setTimeout(() => clearInterval(checkPortal), 5000);
+  };
+  
+  script.onerror = (error) => {
+    console.error("[Sign In] Script failed to load:", error);
+    setScriptError("Failed to load authentication system");
+  };
+  
+  document.head.appendChild(script);
+}, []);
     async function sendMagicLink(email) {
       try {
         console.log("[Sign In] Attempting to send magic link...");
