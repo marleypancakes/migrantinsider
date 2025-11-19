@@ -1,4 +1,4 @@
-exports.handler = async (event) => {
+export default async function handler (event) {
     console.log("[Sign In] Function started");
     
     // Only allow POST
