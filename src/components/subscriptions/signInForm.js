@@ -2,46 +2,61 @@ import React from "react"
 import TitleImage from "../../../static/img/migrantinsidertitle.png"
 
 const SignInForm = () => {
-    const [scriptLoaded, setScriptLoaded] = React.useState(false)
+    const [portalReady, setPortalReady] = React.useState(false)
 
-React.useEffect(() => {
-  if (document.querySelector('script[data-ghost]')) {
-    setScriptLoaded(true);
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.src = 'https://unpkg.com/@tryghost/portal@latest/umd/portal.min.js';
-  script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
-  script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY_HERE'); // Just the key, no URL
-  script.async = true;
-  
-  script.onload = () => {
-    console.log("[Portal] Script loaded");
-    setScriptLoaded(true);
-  };
-  
-  script.onerror = (error) => {
-    console.error("[Portal] Script error:", error);
-  };
-  
-  document.head.appendChild(script);
-}, []);
-
-    const handleSignIn = () => {
-      // Trigger Ghost Portal's signin modal
-      const portalTrigger = document.querySelector('[data-portal="signin"]');
-      if (portalTrigger) {
-        portalTrigger.click();
-      } else {
-        // Fallback: create and click trigger
-        const link = document.createElement('a');
-        link.setAttribute('data-portal', 'signin');
-        link.href = '#/portal/signin';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    React.useEffect(() => {
+      // Remove any existing Portal scripts/iframes
+      const existingScript = document.querySelector('script[data-ghost]');
+      if (existingScript) {
+        existingScript.remove();
       }
+      
+      const existingIframe = document.querySelector('iframe[data-frame]');
+      if (existingIframe) {
+        existingIframe.remove();
+      }
+
+      console.log("[Portal] Initializing...");
+
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/@tryghost/portal@~2.36/umd/portal.min.js';
+      script.setAttribute('data-ghost', 'https://notes-on-the-crises.ghost.io');
+      script.setAttribute('data-key', 'YOUR_CONTENT_API_KEY');
+      script.async = true;
+      
+      script.onload = () => {
+        console.log("[Portal] Script loaded");
+        setTimeout(() => {
+          setPortalReady(true);
+          console.log("[Portal] Ready");
+        }, 1500);
+      };
+      
+      script.onerror = (error) => {
+        console.error("[Portal] Load error:", error);
+      };
+      
+      document.body.appendChild(script);
+
+      return () => {
+        // Cleanup
+        script.remove();
+      };
+    }, []);
+
+    const handleSignIn = (e) => {
+      e.preventDefault();
+      console.log("[Portal] Triggering sign in...");
+      
+      // Method 1: Use hash navigation
+      window.location.hash = '#/portal/signin';
+      
+      // Method 2: Dispatch custom event (Portal might listen to this)
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('portal-action', { 
+          detail: { action: 'openPopup', page: 'signin' }
+        }));
+      }, 100);
     };
 
     return (
@@ -50,22 +65,21 @@ React.useEffect(() => {
         <h1 className="w-100 h-auto text-center text-3xl font-extrabold leading-tight text-[#000000] lg:mb-6 lg:text-4xl dark:">
           Sign In
         </h1>
-        <button 
-          onClick={handleSignIn}
-          disabled={!scriptLoaded}
-          className="bg-darkorange rounded mt-3 p-2 text-white w-full"
-        >
-          Continue
-        </button>
         
-        {/* This hidden link triggers Ghost Portal */}
-        <a 
-          href="#/portal/signin" 
-          data-portal="signin"
-          style={{ display: 'none' }}
-        >
-          Sign in
-        </a>
+        <form onSubmit={handleSignIn}>
+          <button 
+            type="submit"
+            disabled={!portalReady}
+            className="bg-darkorange rounded mt-3 p-2 text-white w-full"
+          >
+            {portalReady ? 'Continue' : 'Loading...'}
+          </button>
+        </form>
+        
+        {/* Debug info */}
+        <div className="text-xs text-gray-500 mt-2">
+          Portal status: {portalReady ? 'Ready' : 'Loading...'}
+        </div>
       </div>
     )
 }
